@@ -1,4 +1,4 @@
-package com.sy.filmora.ui.theme
+package com.sy.skycast.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

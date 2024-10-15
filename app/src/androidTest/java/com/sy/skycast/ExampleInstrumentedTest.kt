@@ -1,4 +1,4 @@
-package com.sy.filmora
+package com.sy.skycast
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

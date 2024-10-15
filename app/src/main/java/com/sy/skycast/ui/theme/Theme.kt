@@ -1,6 +1,5 @@
-package com.sy.filmora.ui.theme
+package com.sy.skycast.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
