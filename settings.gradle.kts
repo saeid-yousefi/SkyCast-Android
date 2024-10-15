@@ -17,3 +17,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "SkyCast"
 include(":app")
+
+includeBuild("build-logic")
