@@ -21,13 +21,17 @@ dependencies {
 }
 gradlePlugin {
     plugins {
-        register("androidApplication") {
+        register("androidApplicationPlugin") {
             id = "skycast.android.application"
             implementationClass = "com.sy.convention.plugin.AndroidApplicationPlugin"
         }
-        register("androidLibrary") {
+        register("androidLibraryPlugin") {
             id = "skycast.android.library"
             implementationClass = "com.sy.convention.plugin.AndroidLibraryPlugin"
+        }
+        register("composePlugin") {
+            id = "skycast.android.compose"
+            implementationClass = "com.sy.convention.plugin.ComposePlugin"
         }
     }
 }
