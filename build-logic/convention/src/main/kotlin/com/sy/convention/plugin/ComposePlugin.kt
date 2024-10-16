@@ -12,9 +12,12 @@ class ComposePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             with(plugins) {
-                apply(libs.findPlugin("compose-compiler").get().toString())
+                apply(libs.findPlugin("compose-compiler").get().get().pluginId)
             }
             extensions.configure<ApplicationExtension> {
+                buildFeatures {
+                    compose = true
+                }
                 composeOptions {
                     kotlinCompilerExtensionVersion =
                         libs.findVersion("composeCompiler").get().toString()
@@ -22,11 +25,12 @@ class ComposePlugin : Plugin<Project> {
             }
             dependencies {
                 add("implementation", libs.findLibrary("androidx-activity-compose").get())
-                add("implementation", platform(libs.findLibrary("androidx-activity-compose").get()))
+                add("implementation", platform(libs.findLibrary("androidx-compose-bom").get()))
                 add("implementation", libs.findLibrary("androidx-ui").get())
-                add("implementation", libs.findLibrary("libs.androidx.ui.graphics").get())
-                add("implementation", libs.findLibrary("androidx-ui-tooling").get())
-                add("implementation", libs.findLibrary("libs.androidx.material3").get())
+                add("implementation", libs.findLibrary("androidx.ui.graphics").get())
+                add("implementation", libs.findLibrary("androidx.material3").get())
+                add("debugImplementation", libs.findLibrary("androidx-ui-tooling").get())
+                add("debugImplementation", libs.findLibrary("androidx-ui-test-manifest").get())
             }
         }
     }

@@ -30,8 +30,16 @@ gradlePlugin {
             implementationClass = "com.sy.convention.plugin.AndroidLibraryPlugin"
         }
         register("composePlugin") {
-            id = "skycast.android.compose"
+            id = "skycast.compose"
             implementationClass = "com.sy.convention.plugin.ComposePlugin"
+        }
+        register("UiTestPlugin") {
+            id = "skycast.uitest"
+            implementationClass = "com.sy.convention.plugin.UiTestPlugin"
+        }
+        register("UnitTestPlugin") {
+            id = "skycast.unittest"
+            implementationClass = "com.sy.convention.plugin.UnitTestPlugin"
         }
     }
 }
