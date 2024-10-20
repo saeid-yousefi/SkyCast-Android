@@ -1,6 +1,6 @@
 package com.sy.convention.plugin
 
-import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.gradle.LibraryExtension
 import com.sy.convention.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -22,7 +22,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
             }
 
-            extensions.configure<ApplicationExtension> {
+            extensions.configure<LibraryExtension> {
                 compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
                 defaultConfig {
                     minSdk = libs.findVersion("minSdk").get().toString().toInt()
@@ -48,10 +48,10 @@ class AndroidLibraryPlugin : Plugin<Project> {
                     }
                 }
                 dependencies {
-                    add("implementation", libs.findLibrary("androidx-core-ktx").get().toString())
+                    add("implementation", libs.findLibrary("androidx-core-ktx").get())
                     add(
                         "implementation",
-                        libs.findLibrary("androidx-lifecycle-runtime-ktx").get().toString()
+                        libs.findLibrary("androidx-lifecycle-runtime-ktx").get()
                     )
                 }
             }
