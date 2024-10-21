@@ -15,6 +15,11 @@ minSdk = "24"
 targetSdk = "34"
 appcompat = "1.6.1"
 material = "1.10.0"
+coroutines = "1.9.0"
+jvm = "2.0.0"
+retrofit = "2.11.0"
+koin-bom = "4.0.0"
+ktor = "3.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,10 +41,27 @@ koltinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ver
 kspGradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor-logger = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jvm" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+skycast-android-application = { id = "skycast.android.application", version = "unspecified" }
+skycast-compose = { id = "skycast.compose", version = "unspecified" }
+skycast-test-android = { id = "skycast.uitest", version = "unspecified" }
+skycast-test-unit = { id = "skycast.unittest", version = "unspecified" }
+skycast-async = { id = "skycast.async", version = "unspecified" }
+skycast-di = { id = "skycast.koin", version = "unspecified" }
+skycast-network = { id = "skycast.ktor", version = "unspecified" }
 

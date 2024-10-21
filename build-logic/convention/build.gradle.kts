@@ -41,5 +41,17 @@ gradlePlugin {
             id = "skycast.unittest"
             implementationClass = "com.sy.convention.plugin.UnitTestPlugin"
         }
+        register("CoroutinesPlugin") {
+            id = "skycast.async"
+            implementationClass = "com.sy.convention.plugin.CoroutinesPlugin"
+        }
+        register("KoinPlugin") {
+            id = "skycast.koin"
+            implementationClass = "com.sy.convention.plugin.KoinPlugin"
+        }
+        register("KtorPlugin") {
+            id = "skycast.ktor"
+            implementationClass = "com.sy.convention.plugin.KtorPlugin"
+        }
     }
 }

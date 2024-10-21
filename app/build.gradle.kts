@@ -1,8 +1,11 @@
 plugins {
-    id("skycast.android.application")
-    id("skycast.compose")
-    id("skycast.uitest")
-    id("skycast.unittest")
+    alias(libs.plugins.skycast.android.application)
+    alias(libs.plugins.skycast.compose)
+    alias(libs.plugins.skycast.async)
+    alias(libs.plugins.skycast.di)
+    alias(libs.plugins.skycast.network)
+    alias(libs.plugins.skycast.test.android)
+    alias(libs.plugins.skycast.test.unit)
 }
 
 android {
