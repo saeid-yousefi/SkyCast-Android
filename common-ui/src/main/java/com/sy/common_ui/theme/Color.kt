@@ -1,4 +1,4 @@
-package com.sy.skycast.ui.theme
+package com.sy.common_ui.theme
 
 import androidx.compose.ui.graphics.Color
 

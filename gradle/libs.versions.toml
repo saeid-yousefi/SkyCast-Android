@@ -20,6 +20,7 @@ jvm = "2.0.0"
 retrofit = "2.11.0"
 koin-bom = "4.0.0"
 ktor = "3.0.0"
+navigation = "2.8.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,6 +30,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -58,7 +60,9 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 skycast-android-application = { id = "skycast.android.application", version = "unspecified" }
-skycast-compose = { id = "skycast.compose", version = "unspecified" }
+skycast-android-library = { id = "skycast.android.library", version = "unspecified" }
+skycast-compose-application = { id = "skycast.compose.application", version = "unspecified" }
+skycast-compose-library = { id = "skycast.compose.library", version = "unspecified" }
 skycast-test-android = { id = "skycast.uitest", version = "unspecified" }
 skycast-test-unit = { id = "skycast.unittest", version = "unspecified" }
 skycast-async = { id = "skycast.async", version = "unspecified" }

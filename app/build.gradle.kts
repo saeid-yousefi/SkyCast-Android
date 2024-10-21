@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.skycast.android.application)
-    alias(libs.plugins.skycast.compose)
+    alias(libs.plugins.skycast.compose.application)
     alias(libs.plugins.skycast.async)
     alias(libs.plugins.skycast.di)
     alias(libs.plugins.skycast.network)
@@ -16,4 +16,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+dependencies {
+    implementation(project(":common-ui"))
 }

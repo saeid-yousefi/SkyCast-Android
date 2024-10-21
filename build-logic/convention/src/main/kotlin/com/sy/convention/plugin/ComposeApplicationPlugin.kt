@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
 
-class ComposePlugin : Plugin<Project> {
+class ComposeApplicationPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             with(plugins) {
@@ -27,6 +27,7 @@ class ComposePlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx-activity-compose").get())
                 add("implementation", platform(libs.findLibrary("androidx-compose-bom").get()))
                 add("implementation", libs.findLibrary("androidx-ui").get())
+                add("implementation", libs.findLibrary("androidx-compose-navigation").get())
                 add("implementation", libs.findLibrary("androidx.ui.graphics").get())
                 add("implementation", libs.findLibrary("androidx.material3").get())
                 add("debugImplementation", libs.findLibrary("androidx-ui-tooling").get())

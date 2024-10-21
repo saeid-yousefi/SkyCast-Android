@@ -18,3 +18,5 @@ dependencyResolutionManagement {
 rootProject.name = "SkyCast"
 include(":app")
 includeBuild("build-logic")
+include(":feature-onboarding:onboarding-ui")
+include(":common-ui")

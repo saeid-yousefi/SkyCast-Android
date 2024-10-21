@@ -1,4 +1,4 @@
-package com.sy.skycast.ui.theme
+package com.sy.common_ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
