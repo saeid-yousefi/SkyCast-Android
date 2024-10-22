@@ -19,4 +19,5 @@ android {
 }
 dependencies {
     implementation(project(":common-ui"))
+    implementation(libs.datastore)
 }

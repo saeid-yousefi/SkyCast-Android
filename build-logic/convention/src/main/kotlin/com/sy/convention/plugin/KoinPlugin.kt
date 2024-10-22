@@ -12,8 +12,9 @@ class KoinPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             dependencies {
-                add("implementation", platform(libs.findLibrary("koin-bom").get()))
-                add("implementation", libs.findLibrary("koin-core").get())
+                add("implementation", libs.findLibrary("koin-android").get())
+                add("implementation", libs.findLibrary("koin-androidx-compose").get())
+                add("implementation", libs.findLibrary("koin-androidx-viewmodel").get())
             }
         }
     }

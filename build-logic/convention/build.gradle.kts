@@ -57,5 +57,9 @@ gradlePlugin {
             id = "skycast.ktor"
             implementationClass = "com.sy.convention.plugin.KtorPlugin"
         }
+        register("DataStorePlugin") {
+            id = "skycast.datastore"
+            implementationClass = "com.sy.convention.plugin.DataStorePlugin"
+        }
     }
 }
