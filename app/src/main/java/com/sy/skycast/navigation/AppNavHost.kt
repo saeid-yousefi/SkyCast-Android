@@ -3,13 +3,17 @@ package com.sy.skycast.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.sy.onboarding_ui.navigation.onboardingNavGraph
-
-const val MAIN_NAV_GRAPH_ROUTE = "main_nav_graph"
+import com.sy.splash_ui.SplashScreen
+import com.sy.splash_ui.navigation.SplashScreens
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = MAIN_NAV_GRAPH_ROUTE) {
+    NavHost(navController = navController, startDestination = SplashScreens.Main.route) {
+        composable(route = SplashScreens.Main.route) {
+            SplashScreen()
+        }
         onboardingNavGraph(navController)
     }
 }

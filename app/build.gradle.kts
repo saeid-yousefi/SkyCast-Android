@@ -22,5 +22,10 @@ dependencies {
     implementation(project(":feature-onboarding:onboarding-data"))
     implementation(project(":feature-onboarding:onboarding-domain"))
     implementation(project(":feature-onboarding:onboarding-ui"))
+
+    implementation(project(":feature-splash:splash-data"))
+    implementation(project(":feature-splash:splash-domain"))
+    implementation(project(":feature-splash:splash-ui"))
+
     implementation(libs.datastore)
 }
