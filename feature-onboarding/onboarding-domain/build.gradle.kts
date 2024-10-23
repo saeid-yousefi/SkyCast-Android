@@ -6,3 +6,6 @@ plugins {
 android {
     namespace = "com.sy.onboarding_domain"
 }
+dependencies {
+    implementation(project(":common-domain"))
+}

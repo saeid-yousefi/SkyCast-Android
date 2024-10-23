@@ -19,5 +19,8 @@ android {
 }
 dependencies {
     implementation(project(":common-ui"))
+    implementation(project(":feature-onboarding:onboarding-data"))
+    implementation(project(":feature-onboarding:onboarding-domain"))
+    implementation(project(":feature-onboarding:onboarding-ui"))
     implementation(libs.datastore)
 }
