@@ -12,4 +12,5 @@ android {
 
 dependencies{
     implementation(project(":common-ui"))
+    implementation(project(":feature-splash:splash-domain"))
 }

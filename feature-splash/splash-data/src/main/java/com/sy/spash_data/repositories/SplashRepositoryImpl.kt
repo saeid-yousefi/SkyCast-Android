@@ -1,14 +1,14 @@
-package com.sy.onboarding_data.repositories
+package com.sy.spash_data.repositories
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import com.sy.onboarding_domain.repository.OnBoardingRepository
+import com.sy.spash_domain.repositories.SplashRepository
 import kotlinx.coroutines.flow.first
 
-class OnBoardingRepositoryImpl(private val dataStore: DataStore<Preferences>) :
-    OnBoardingRepository {
+class SplashRepositoryImpl(private val dataStore: DataStore<Preferences>) :
+    SplashRepository {
     companion object {
         private val IS_FIRST_LAUNCH_KEY = booleanPreferencesKey("is_first_launch")
     }

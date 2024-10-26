@@ -1,6 +1,6 @@
-package com.sy.onboarding_domain.repository
+package com.sy.spash_domain.repositories
 
-interface OnBoardingRepository {
+interface SplashRepository {
     suspend fun isFirstLaunch(): Boolean
     suspend fun setFirstLaunch(isFirstLaunch: Boolean = false)
 }

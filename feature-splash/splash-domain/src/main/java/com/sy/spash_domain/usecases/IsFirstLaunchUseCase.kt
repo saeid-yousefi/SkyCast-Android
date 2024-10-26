@@ -1,10 +1,11 @@
-package com.sy.onboarding_domain.usecase
+package com.sy.spash_domain.usecases
 
 import com.sy.common_domain.usecase.ValueUseCase
-import com.sy.onboarding_domain.repository.OnBoardingRepository
+import com.sy.spash_domain.repositories.SplashRepository
 
-class IsFirstLaunchUseCase(private val repository: OnBoardingRepository) :
+class IsFirstLaunchUseCase(private val repository: SplashRepository) :
     ValueUseCase<Unit, Boolean>() {
+
     override suspend fun execute(params: Unit): Boolean {
         return repository.isFirstLaunch()
     }
