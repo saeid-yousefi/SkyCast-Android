@@ -9,5 +9,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":common-domain"))
+    api(project(":common-domain"))
 }

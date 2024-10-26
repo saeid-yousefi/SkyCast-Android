@@ -2,6 +2,7 @@ package com.sy.splash_ui
 
 import androidx.lifecycle.viewModelScope
 import com.sy.common_ui.base.BaseViewModel
+import com.sy.common_ui.graphs.RootGraphs
 import com.sy.spash_domain.usecases.IsFirstLaunchUseCase
 import kotlinx.coroutines.launch
 
@@ -32,7 +33,7 @@ class SplashViewModel(
     private suspend fun checkIsFirstLaunch() {
         val isFirstLaunch = isFirstLaunchUseCase(Unit)
         if (isFirstLaunch) {
-
+            setEffect(SplashEffect.NavigateTo(RootGraphs.OnBoarding.route))
         } else {
 
         }

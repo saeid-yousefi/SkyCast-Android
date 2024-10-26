@@ -8,3 +8,6 @@ plugins {
 android {
     namespace = "com.sy.onboarding_ui"
 }
+dependencies{
+    implementation(project(":common-ui"))
+}
