@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.common_ui.graphs.RootGraphs
 import com.sy.spash_domain.usecases.IsFirstLaunchUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
@@ -12,7 +13,9 @@ class SplashViewModel(
 ) : BaseViewModel<SplashState, SplashEffect, SplashAction>() {
 
     init {
-
+        viewModelScope.launch {
+            checkIsFirstLaunch()
+        }
     }
 
     override fun createInitialState(): SplashState {
@@ -33,6 +36,7 @@ class SplashViewModel(
     private suspend fun checkIsFirstLaunch() {
         val isFirstLaunch = isFirstLaunchUseCase(Unit)
         if (isFirstLaunch) {
+//            delay(2000)
             setEffect(SplashEffect.NavigateTo(RootGraphs.OnBoarding.route))
         } else {
 

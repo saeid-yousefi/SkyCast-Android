@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,17 @@ fun SplashScreen(navController: NavController) {
 
 @Composable
 fun SplashScreen(navController: NavController, viewModel: SplashViewModel) {
+    LaunchedEffect(key1 = viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is SplashEffect.NavigateTo -> {
+                    navController.popBackStack()
+                    navController.navigate(effect.route)
+                }
+            }
+        }
+    }
+
     SplashScreen(viewState = viewModel.state.collectAsState().value) { action ->
         when (action) {
             else -> {}
