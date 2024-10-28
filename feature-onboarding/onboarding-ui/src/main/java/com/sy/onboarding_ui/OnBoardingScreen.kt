@@ -1,5 +1,6 @@
 @file:OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationApi::class,
     ExperimentalAnimationApi::class
 )
 
@@ -122,10 +123,9 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                     AnimatedContent(
                         targetState = viewState.currentPageIndex,
                         transitionSpec = {
-                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with
-                                    fadeOut() + slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth })
-                        },
-                        label = ""
+                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
+                                targetOffsetX = { fullWidth -> -fullWidth })
+                        }, label = ""
                     ) { index ->
                         Image(
                             painter = painterResource(id = OnBoardingPages[index].imageId),
@@ -146,12 +146,10 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     AnimatedContent(
-                        targetState = viewState.currentPageIndex,
-                        transitionSpec = {
-                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with
-                                    fadeOut() + slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth })
-                        },
-                        label = ""
+                        targetState = viewState.currentPageIndex, transitionSpec = {
+                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
+                                targetOffsetX = { fullWidth -> -fullWidth })
+                        }, label = ""
                     ) { index ->
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
@@ -186,8 +184,7 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                                 .background(brush = MainGradientBrush)
                                 .clickable {
                                     actionRunner(OnBoardingAction.NextOnBoard)
-                                },
-                            contentAlignment = Alignment.Center
+                                }, contentAlignment = Alignment.Center
                         ) {
                             AnimatedContent(
                                 targetState = viewState.currentPageIndex,
@@ -219,13 +216,10 @@ private fun DrawArc() {
     Canvas(modifier = Modifier
         .size(0.dp)
         .offset(
-            x = (screenWidth.div(2)).dp,
-            y = screenHeight.dp
-        ),
-        onDraw = {
-            drawCircle(color = Color.White, radius = screenHeight.div(2).dp.toPx())
-        }
-    )
+            x = (screenWidth.div(2)).dp, y = screenHeight.dp
+        ), onDraw = {
+        drawCircle(color = Color.White, radius = screenHeight.div(2).dp.toPx())
+    })
 }
 
 @Composable
