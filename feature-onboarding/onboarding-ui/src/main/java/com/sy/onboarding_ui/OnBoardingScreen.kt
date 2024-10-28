@@ -26,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.sy.common_ui.composables.MainGradientBrush
+import com.sy.common_ui.ext.popAndNavigate
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.common_ui.theme.PinkDark
 import com.sy.common_ui.theme.PinkLight
@@ -60,11 +62,22 @@ fun OnBoardingScreen(navController: NavController) {
 
 @Composable
 fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewModel) {
-
+    LaunchedEffect(key1 = viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is OnBoardingEffect.NavigateTo -> navController.popAndNavigate(effect.route)
+            }
+        }
+    }
     OnBoardingScreen(viewState = viewModel.state.collectAsState().value) { action ->
         when (action) {
+            is OnBoardingAction.NavigateTo -> {
+                navController.popAndNavigate(action.route)
+            }
 
-            else -> {}
+            else -> {
+                viewModel.submitAction(action)
+            }
         }
     }
 }
@@ -80,7 +93,8 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
         ) {
             DrawArc()
             Column(
-                Modifier
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
                     .fillMaxSize()
                     .padding(LocalDimens.current.paddingMedium)
             ) {
@@ -96,7 +110,7 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                         }
                     }
                     Image(
-                        painter = painterResource(id = R.drawable.image_one),
+                        painter = painterResource(id = viewState.onBoardingPage.imageId),
                         contentDescription = "",
                         modifier = Modifier.fillMaxWidth(),
                         contentScale = ContentScale.FillWidth
@@ -105,7 +119,8 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f),
+                        .weight(1f)
+                        .padding(horizontal = LocalDimens.current.paddingMedium),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -114,11 +129,18 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                         text = stringResource(id = viewState.onBoardingPage.titleId),
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Center,
+                        color = Color.Black,
+                        minLines = 2,
+                        maxLines = 2
                     )
                     Spacer(modifier = Modifier.height(LocalDimens.current.paddingLarge))
                     Text(
                         text = stringResource(id = viewState.onBoardingPage.descriptionId),
-                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp)
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp),
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        minLines = 2,
+                        maxLines = 2
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.size(80.dp)) {
@@ -130,7 +152,9 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                                 .fillMaxSize()
                                 .clip(CircleShape)
                                 .background(brush = MainGradientBrush)
-                                .clickable { },
+                                .clickable {
+                                    actionRunner(OnBoardingAction.NextOnBoard)
+                                },
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
