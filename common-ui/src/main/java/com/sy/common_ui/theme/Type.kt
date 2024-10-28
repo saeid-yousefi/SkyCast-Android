@@ -20,35 +20,30 @@ val Typography = Typography(
         fontFamily = PoppinsFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
         fontFamily = PoppinsFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
-        lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     titleLarge = TextStyle(
         fontFamily = PoppinsFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 40.sp,
-        lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     titleMedium = TextStyle(
         fontFamily = PoppinsFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 25.sp,
-        lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodySmall = TextStyle(
         fontFamily = PoppinsFontFamily,
         fontWeight = FontWeight.Light,
         fontSize = 12.sp,
-        lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     )
 )

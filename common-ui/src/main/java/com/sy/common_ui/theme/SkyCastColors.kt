@@ -8,6 +8,9 @@ val CharcoalBlueDark = Color(0xFF2C2D35)
 val Grey = Color(0xFFF2F4F7)
 val GreyDark = Color(0xFFBCC8D6)
 
+val PinkLight = Color(0xFFFF4F80)
+val PinkDark = Color(0xFFC23ACC)
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
