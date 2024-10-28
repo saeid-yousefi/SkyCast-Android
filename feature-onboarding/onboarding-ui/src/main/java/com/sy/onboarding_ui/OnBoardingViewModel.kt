@@ -23,7 +23,6 @@ class OnBoardingViewModel : BaseViewModel<OnBoardingState, OnBoardingEffect, OnB
                         setState {
                             copy(
                                 currentPageIndex = currentPageIndex,
-                                onBoardingPage = OnBoardingPages[currentPageIndex]
                             )
                         }
                     }

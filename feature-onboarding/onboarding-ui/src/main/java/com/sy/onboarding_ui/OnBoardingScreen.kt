@@ -1,9 +1,19 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
+    ExperimentalAnimationApi::class
+)
 
 package com.sy.onboarding_ui
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.with
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -109,12 +119,22 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                             Text(text = stringResource(id = R.string.skip), color = Color.White)
                         }
                     }
-                    Image(
-                        painter = painterResource(id = viewState.onBoardingPage.imageId),
-                        contentDescription = "",
-                        modifier = Modifier.fillMaxWidth(),
-                        contentScale = ContentScale.FillWidth
-                    )
+                    AnimatedContent(
+                        targetState = viewState.currentPageIndex,
+                        transitionSpec = {
+                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with
+                                    fadeOut() + slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth })
+                        },
+                        label = ""
+                    ) { index ->
+                        Image(
+                            painter = painterResource(id = OnBoardingPages[index].imageId),
+                            contentDescription = "",
+                            modifier = Modifier.fillMaxWidth(),
+                            contentScale = ContentScale.FillWidth
+                        )
+                    }
+
                 }
                 Column(
                     modifier = Modifier
@@ -125,23 +145,35 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = stringResource(id = viewState.onBoardingPage.titleId),
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        color = Color.Black,
-                        minLines = 2,
-                        maxLines = 2
-                    )
-                    Spacer(modifier = Modifier.height(LocalDimens.current.paddingLarge))
-                    Text(
-                        text = stringResource(id = viewState.onBoardingPage.descriptionId),
-                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp),
-                        color = Color.Black,
-                        textAlign = TextAlign.Center,
-                        minLines = 2,
-                        maxLines = 2
-                    )
+                    AnimatedContent(
+                        targetState = viewState.currentPageIndex,
+                        transitionSpec = {
+                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with
+                                    fadeOut() + slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth })
+                        },
+                        label = ""
+                    ) { index ->
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = stringResource(id = OnBoardingPages[index].titleId),
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Center,
+                                color = Color.Black,
+                                minLines = 2,
+                                maxLines = 2
+                            )
+                            Spacer(modifier = Modifier.height(LocalDimens.current.paddingLarge))
+                            Text(
+                                text = stringResource(id = OnBoardingPages[index].descriptionId),
+                                style = MaterialTheme.typography.bodySmall.copy(fontSize = 14.sp),
+                                color = Color.Black,
+                                textAlign = TextAlign.Center,
+                                minLines = 2,
+                                maxLines = 2
+                            )
+                        }
+                    }
+
                     Spacer(modifier = Modifier.weight(1f))
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.size(80.dp)) {
                         DrawCircle(((viewState.currentPageIndex + 1).toFloat() / OnBoardingPages.size.toFloat()))
@@ -157,11 +189,19 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                                 },
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_next),
-                                tint = Color.White,
-                                contentDescription = ""
-                            )
+                            AnimatedContent(
+                                targetState = viewState.currentPageIndex,
+                                transitionSpec = { fadeIn() with fadeOut() },
+                                label = ""
+                            ) { index ->
+                                val imageId =
+                                    if (index < 3) R.drawable.ic_next else R.drawable.ic_check
+                                Icon(
+                                    painter = painterResource(id = imageId),
+                                    tint = Color.White,
+                                    contentDescription = ""
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.weight(0.5f))
