@@ -7,8 +7,10 @@
 package com.sy.onboarding_ui
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -22,13 +24,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,6 +49,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -73,6 +79,7 @@ fun OnBoardingScreen(navController: NavController) {
 
 @Composable
 fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewModel) {
+    val viewState = viewModel.state.collectAsState().value
     LaunchedEffect(key1 = viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -80,7 +87,7 @@ fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewMode
             }
         }
     }
-    OnBoardingScreen(viewState = viewModel.state.collectAsState().value) { action ->
+    OnBoardingScreen(viewState = viewState) { action ->
         when (action) {
             is OnBoardingAction.NavigateTo -> {
                 navController.popAndNavigate(action.route)
@@ -89,6 +96,13 @@ fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewMode
             else -> {
                 viewModel.submitAction(action)
             }
+        }
+    }
+    BackHandler {
+        if (viewState.currentPageIndex == 0) {
+            navController.popBackStack()
+        } else {
+            viewModel.submitAction(OnBoardingAction.PreviousOnBoard)
         }
     }
 }
@@ -120,21 +134,32 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                             Text(text = stringResource(id = R.string.skip), color = Color.White)
                         }
                     }
-                    AnimatedContent(
-                        targetState = viewState.currentPageIndex,
-                        transitionSpec = {
-                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
-                                targetOffsetX = { fullWidth -> -fullWidth })
-                        }, label = ""
-                    ) { index ->
-                        Image(
-                            painter = painterResource(id = OnBoardingPages[index].imageId),
-                            contentDescription = "",
-                            modifier = Modifier.fillMaxWidth(),
-                            contentScale = ContentScale.FillWidth
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
+                        AnimatedContent(
+                            targetState = viewState.currentPageIndex,
+                            transitionSpec = {
+                                fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
+                                    targetOffsetX = { fullWidth -> -fullWidth })
+                            }, label = ""
+                        ) { index ->
+                            Image(
+                                painter = painterResource(id = OnBoardingPages[index].imageId),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                contentScale = ContentScale.FillHeight
+                            )
+                        }
+                        Stepper(
+                            modifier = Modifier.fillMaxHeight(0.3f),
+                            currentStep = viewState.currentPageIndex
                         )
                     }
-
+                    Spacer(modifier = Modifier.height(LocalDimens.current.paddingLarge))
                 }
                 Column(
                     modifier = Modifier
@@ -144,7 +169,7 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.weight(2f))
                     AnimatedContent(
                         targetState = viewState.currentPageIndex, transitionSpec = {
                             fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
@@ -224,7 +249,6 @@ private fun DrawArc() {
 
 @Composable
 private fun DrawCircle(progress: Float = 0.25f) {
-
     val animatedProgress by animateFloatAsState(targetValue = progress, label = "")
 
     Canvas(modifier = Modifier.size(100.dp)) {
@@ -238,5 +262,34 @@ private fun DrawCircle(progress: Float = 0.25f) {
             style = Stroke(width = 12f, cap = StrokeCap.Round),
             size = Size(diameter, diameter)
         )
+    }
+}
+
+@Composable
+private fun Stepper(
+    modifier: Modifier = Modifier,
+    currentStep: Int = 0,
+    stepCounts: Int = OnBoardingPages.size - 1,
+) {
+    Row(
+        modifier = Modifier.then(modifier),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        for (i in 0..stepCounts) {
+            val isIndex = currentStep == i
+            Canvas(
+                modifier = Modifier
+                    .animateContentSize()
+                    .height(10.dp)
+                    .width(if (isIndex) 20.dp else 10.dp)
+            ) {
+                drawRoundRect(
+                    color = if (isIndex) Color.Black else Color.White,
+                    cornerRadius = CornerRadius(20f, 20f)
+                )
+            }
+        }
+
     }
 }

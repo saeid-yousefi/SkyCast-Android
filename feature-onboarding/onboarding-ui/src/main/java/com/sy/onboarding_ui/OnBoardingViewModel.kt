@@ -28,6 +28,11 @@ class OnBoardingViewModel : BaseViewModel<OnBoardingState, OnBoardingEffect, OnB
                     }
                 }
 
+                is OnBoardingAction.PreviousOnBoard -> {
+                    val currentPageIndex = currentState.currentPageIndex - 1
+                    setState { copy(currentPageIndex = currentPageIndex) }
+                }
+
                 else -> {}
             }
         }

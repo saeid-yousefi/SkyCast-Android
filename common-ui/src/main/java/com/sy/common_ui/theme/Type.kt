@@ -31,13 +31,13 @@ val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = PoppinsFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 40.sp,
+        fontSize = 32.sp,
         letterSpacing = 0.5.sp
     ),
     titleMedium = TextStyle(
         fontFamily = PoppinsFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 25.sp,
+        fontSize = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodySmall = TextStyle(
