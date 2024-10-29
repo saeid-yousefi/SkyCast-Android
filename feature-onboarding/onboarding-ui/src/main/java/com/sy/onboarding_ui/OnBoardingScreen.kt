@@ -10,7 +10,6 @@ import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -49,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -155,7 +155,7 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                             )
                         }
                         Stepper(
-                            modifier = Modifier.fillMaxHeight(0.3f),
+                            modifier = Modifier.fillMaxHeight(0.2f),
                             currentStep = viewState.currentPageIndex
                         )
                     }
@@ -273,20 +273,22 @@ private fun Stepper(
 ) {
     Row(
         modifier = Modifier.then(modifier),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.paddingSmall),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         for (i in 0..stepCounts) {
             val isIndex = currentStep == i
+            val scaleState = animateFloatAsState(targetValue = if (isIndex) 2f else 1f, label = "")
             Canvas(
                 modifier = Modifier
-                    .animateContentSize()
                     .height(10.dp)
-                    .width(if (isIndex) 20.dp else 10.dp)
+                    .width(if (isIndex) 24.dp else 10.dp)
+                    .scale(scaleX = scaleState.value, scaleY = 1f)
+                    .padding(horizontal = if (isIndex) 6.dp else 0.dp)
             ) {
                 drawRoundRect(
                     color = if (isIndex) Color.Black else Color.White,
-                    cornerRadius = CornerRadius(20f, 20f)
+                    cornerRadius = if (isIndex) CornerRadius(10f, 10f) else CornerRadius(20f, 20f)
                 )
             }
         }
