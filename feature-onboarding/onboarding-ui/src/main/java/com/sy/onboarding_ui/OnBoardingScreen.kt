@@ -20,6 +20,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,6 +64,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.wear.compose.material.ExperimentalWearMaterialApi
+import androidx.wear.compose.material.FractionalThreshold
+import androidx.wear.compose.material.rememberSwipeableState
+import androidx.wear.compose.material.swipeable
 import com.sy.common_ui.composables.MainGradientBrush
 import com.sy.common_ui.ext.popAndNavigate
 import com.sy.common_ui.theme.LocalDimens
@@ -107,8 +112,12 @@ fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewMode
     }
 }
 
+@OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction) -> Unit) {
+    val swipeableState = rememberSwipeableState(initialValue = 0)
+    val anchors = OnBoardingPages.indices.associate { it.toFloat() * 100f to it }
+
     Scaffold { innerPadding ->
         Box(
             modifier = Modifier
@@ -140,6 +149,13 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                     ) {
                         AnimatedContent(
                             targetState = viewState.currentPageIndex,
+                            modifier = Modifier
+                                .swipeable(
+                                    state = swipeableState,
+                                    anchors = anchors,
+                                    thresholds = { _, _ -> FractionalThreshold(0.3f) },
+                                    orientation = Orientation.Horizontal
+                                ),
                             transitionSpec = {
                                 fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
                                     targetOffsetX = { fullWidth -> -fullWidth })
@@ -150,7 +166,8 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                                 contentDescription = "",
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .fillMaxHeight(),
+                                    .fillMaxHeight()
+                                    .offset(x = swipeableState.offset.value.toInt().dp, y = 0.dp),
                                 contentScale = ContentScale.FillHeight
                             )
                         }

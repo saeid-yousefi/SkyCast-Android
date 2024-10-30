@@ -11,4 +11,5 @@ android {
 }
 dependencies{
     implementation(project(":common-ui"))
+    implementation(libs.androidx.compose.material)
 }
