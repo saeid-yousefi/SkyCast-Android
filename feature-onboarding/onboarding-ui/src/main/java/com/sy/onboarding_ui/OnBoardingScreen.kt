@@ -158,8 +158,10 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                                     orientation = Orientation.Horizontal
                                 ),
                             transitionSpec = {
-                                fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
-                                    targetOffsetX = { fullWidth -> -fullWidth })
+                                (fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth })).togetherWith(
+                                    fadeOut() + slideOutHorizontally(
+                                        targetOffsetX = { fullWidth -> -fullWidth })
+                                )
                             }, label = ""
                         ) { index ->
                             Image(
@@ -190,8 +192,10 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                     Spacer(modifier = Modifier.weight(2f))
                     AnimatedContent(
                         targetState = viewState.currentPageIndex, transitionSpec = {
-                            fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) with fadeOut() + slideOutHorizontally(
-                                targetOffsetX = { fullWidth -> -fullWidth })
+                            (fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth })).togetherWith(
+                                fadeOut() + slideOutHorizontally(
+                                    targetOffsetX = { fullWidth -> -fullWidth })
+                            )
                         }, label = ""
                     ) { index ->
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
