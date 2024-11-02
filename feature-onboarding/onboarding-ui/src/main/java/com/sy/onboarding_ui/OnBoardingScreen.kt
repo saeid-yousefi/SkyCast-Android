@@ -1,22 +1,16 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class,
-    ExperimentalAnimationApi::class
-)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.sy.onboarding_ui
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -117,7 +111,7 @@ fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewMode
 @Composable
 fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction) -> Unit) {
     val swipeableState = rememberSwipeableState(initialValue = 0)
-    val anchors = OnBoardingPages.indices.associate { it.toFloat() * 100f to it }
+    val anchors = OnBoardingPages.indices.associateBy { it.toFloat() * 100f }
 
     Scaffold { innerPadding ->
         Box(
@@ -236,7 +230,7 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                             AnimatedContent(
                                 targetState = viewState.currentPageIndex == OnBoardingPages.size - 1,
                                 transitionSpec = {
-                                    slideInHorizontally { it*2 } togetherWith slideOutHorizontally { -it*2 }
+                                    slideInHorizontally { it * 2 } togetherWith slideOutHorizontally { -it * 2 }
                                 },
                                 label = ""
                             ) { isFinalPage ->
