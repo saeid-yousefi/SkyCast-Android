@@ -15,6 +15,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.with
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -229,12 +230,14 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                                 }, contentAlignment = Alignment.Center
                         ) {
                             AnimatedContent(
-                                targetState = viewState.currentPageIndex,
-                                transitionSpec = { fadeIn() with fadeOut() },
+                                targetState = viewState.currentPageIndex == OnBoardingPages.size - 1,
+                                transitionSpec = {
+                                    slideInHorizontally { it*2 } togetherWith slideOutHorizontally { -it*2 }
+                                },
                                 label = ""
-                            ) { index ->
+                            ) { isFinalPage ->
                                 val imageId =
-                                    if (index < 3) R.drawable.ic_next else R.drawable.ic_check
+                                    if (isFinalPage) R.drawable.ic_check else R.drawable.ic_next
                                 Icon(
                                     painter = painterResource(id = imageId),
                                     tint = Color.White,
