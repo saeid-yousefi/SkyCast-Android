@@ -107,11 +107,8 @@ fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewMode
     }
 }
 
-@OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction) -> Unit) {
-    val swipeableState = rememberSwipeableState(initialValue = 0)
-    val anchors = OnBoardingPages.indices.associateBy { it.toFloat() * 100f }
 
     Scaffold { innerPadding ->
         Box(
@@ -144,13 +141,6 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                     ) {
                         AnimatedContent(
                             targetState = viewState.currentPageIndex,
-                            modifier = Modifier
-                                .swipeable(
-                                    state = swipeableState,
-                                    anchors = anchors,
-                                    thresholds = { _, _ -> FractionalThreshold(0.3f) },
-                                    orientation = Orientation.Horizontal
-                                ),
                             transitionSpec = {
                                 (fadeIn() + slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth })).togetherWith(
                                     fadeOut() + slideOutHorizontally(
@@ -163,8 +153,7 @@ fun OnBoardingScreen(viewState: OnBoardingState, actionRunner: (OnBoardingAction
                                 contentDescription = "",
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .fillMaxHeight()
-                                    .offset(x = swipeableState.offset.value.toInt().dp, y = 0.dp),
+                                    .fillMaxHeight(),
                                 contentScale = ContentScale.FillHeight
                             )
                         }
@@ -310,6 +299,5 @@ private fun Stepper(
                 )
             }
         }
-
     }
 }
