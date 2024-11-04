@@ -6,9 +6,10 @@ plugins {
     alias(libs.plugins.skycast.test.android)
 }
 
+
 android {
-    namespace = "com.sy.onboarding_ui"
+    namespace = "com.sy.home_ui"
 }
-dependencies{
+dependencies {
     implementation(project(":common-ui"))
 }

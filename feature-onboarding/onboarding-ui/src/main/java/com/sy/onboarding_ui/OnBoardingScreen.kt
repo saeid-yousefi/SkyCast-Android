@@ -3,6 +3,7 @@
 package com.sy.onboarding_ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
@@ -15,7 +16,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,16 +53,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.wear.compose.material.ExperimentalWearMaterialApi
-import androidx.wear.compose.material.FractionalThreshold
-import androidx.wear.compose.material.rememberSwipeableState
-import androidx.wear.compose.material.swipeable
 import com.sy.common_ui.composables.MainGradientBrush
 import com.sy.common_ui.ext.popAndNavigate
 import com.sy.common_ui.theme.LocalDimens
@@ -80,6 +77,7 @@ fun OnBoardingScreen(navController: NavController) {
 @Composable
 fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewModel) {
     val viewState = viewModel.state.collectAsState().value
+    val context = LocalContext.current
     LaunchedEffect(key1 = viewModel.effect) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -100,7 +98,7 @@ fun OnBoardingScreen(navController: NavController, viewModel: OnBoardingViewMode
     }
     BackHandler {
         if (viewState.currentPageIndex == 0) {
-            navController.popBackStack()
+            (context as Activity).finish()
         } else {
             viewModel.submitAction(OnBoardingAction.PreviousOnBoard)
         }
