@@ -10,6 +10,8 @@ class KtorPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             dependencies {
+                add("implementation", libs.findLibrary("kotlinx-serialization").get())
+                add("implementation", libs.findLibrary("ktor-negotiation").get())
                 add("implementation", libs.findLibrary("ktor-core").get())
                 add("implementation", libs.findLibrary("ktor-cio").get())
                 add("implementation", libs.findLibrary("ktor-serialization").get())

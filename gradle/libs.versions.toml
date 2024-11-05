@@ -26,6 +26,7 @@ navigation = "2.8.3"
 dataStore = "1.1.1"
 composeFoundation = "1.7.4"
 composeMaterial = "1.4.0"
+kotlinxSerialization = "1.6.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,8 +56,10 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 koin-androidx-viewmodel = { group = "io.insert-koin", name = "koin-core-viewmodel", version.ref = "koin" }
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
-ktor-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-logger = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
 
 
