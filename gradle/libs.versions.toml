@@ -63,10 +63,12 @@ datastore = { group = "androidx.datastore", name = "datastore-preferences", vers
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jvm" }
+java-library = { id = "java-library", version = "unspecified" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 skycast-android-application = { id = "skycast.android.application", version = "unspecified" }
+skycast-kotlin-library = { id = "skycast.kotlin.library", version = "unspecified" }
 skycast-android-library = { id = "skycast.android.library", version = "unspecified" }
 skycast-compose-application = { id = "skycast.compose.application", version = "unspecified" }
 skycast-compose-library = { id = "skycast.compose.library", version = "unspecified" }

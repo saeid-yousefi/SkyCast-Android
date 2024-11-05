@@ -29,6 +29,10 @@ gradlePlugin {
             id = "skycast.android.library"
             implementationClass = "com.sy.convention.plugin.AndroidLibraryPlugin"
         }
+        register("kotlinLibraryPlugin") {
+            id = "skycast.kotlin.library"
+            implementationClass = "com.sy.convention.plugin.KotlinLibraryPlugin"
+        }
         register("composeApplicationPlugin") {
             id = "skycast.compose.application"
             implementationClass = "com.sy.convention.plugin.ComposeApplicationPlugin"
