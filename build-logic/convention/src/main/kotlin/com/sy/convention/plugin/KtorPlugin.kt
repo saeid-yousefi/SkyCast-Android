@@ -9,6 +9,9 @@ import org.gradle.kotlin.dsl.dependencies
 class KtorPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
+            with(plugins) {
+                apply(libs.findPlugin("kotlinx-serialization").get().get().pluginId)
+            }
             dependencies {
                 add("implementation", libs.findLibrary("kotlinx-serialization").get())
                 add("implementation", libs.findLibrary("ktor-negotiation").get())

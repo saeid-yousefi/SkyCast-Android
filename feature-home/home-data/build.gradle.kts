@@ -9,3 +9,7 @@ plugins {
 android {
     namespace = "com.sy.home_data"
 }
+dependencies {
+    implementation(project(":common-data"))
+    implementation(project(":feature-home:home-domain"))
+}

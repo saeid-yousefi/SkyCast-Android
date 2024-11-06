@@ -26,7 +26,8 @@ navigation = "2.8.3"
 dataStore = "1.1.1"
 composeFoundation = "1.7.4"
 composeMaterial = "1.4.0"
-kotlinxSerialization = "1.6.0"
+kotlinxSerializationPlugin = "2.0.20"
+kotlinxSerialization = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -70,6 +71,7 @@ java-library = { id = "java-library", version = "unspecified" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerializationPlugin" }
 skycast-android-application = { id = "skycast.android.application", version = "unspecified" }
 skycast-kotlin-library = { id = "skycast.kotlin.library", version = "unspecified" }
 skycast-android-library = { id = "skycast.android.library", version = "unspecified" }

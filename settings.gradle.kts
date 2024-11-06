@@ -1,5 +1,7 @@
 pluginManagement {
     repositories {
+        gradlePluginPortal()
+        mavenCentral()
         maven {
             url = uri("https://maven.myket.ir")
         }
@@ -29,3 +31,4 @@ include(":feature-splash:splash-domain")
 include(":feature-home:home-ui")
 include(":feature-home:home-data")
 include(":feature-home:home-domain")
+include(":common-data")
