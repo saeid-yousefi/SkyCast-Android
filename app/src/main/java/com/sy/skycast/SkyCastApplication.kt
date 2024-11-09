@@ -2,7 +2,9 @@ package com.sy.skycast
 
 import android.app.Application
 import com.sy.skycast.di.dataStoreModule
+import com.sy.skycast.di.homeModule
 import com.sy.skycast.di.mainModule
+import com.sy.skycast.di.networkModule
 import com.sy.skycast.di.onBoardingModule
 import com.sy.skycast.di.splashModule
 import org.koin.android.ext.koin.androidContext
@@ -16,8 +18,10 @@ class SkyCastApplication : Application() {
             modules(
                 dataStoreModule,
                 mainModule,
+                homeModule,
+                onBoardingModule,
                 splashModule,
-                onBoardingModule
+                networkModule
             )
         }
     }

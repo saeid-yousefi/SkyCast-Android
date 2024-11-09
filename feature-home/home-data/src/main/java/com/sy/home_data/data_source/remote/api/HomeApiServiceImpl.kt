@@ -3,13 +3,14 @@ package com.sy.home_data.data_source.remote.api
 import com.sy.common_data.Constants
 import com.sy.common_data.network.bodyOrThrow
 import com.sy.home_data.model.dto.GeoNameResponse
+import com.sy.home_data.model.dto.SearchCityResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
 class HomeApiServiceImpl(private val client: HttpClient) : HomeApiService {
 
-    override suspend fun searchCity(cityName: String): List<GeoNameResponse> {
+    override suspend fun searchCity(cityName: String): SearchCityResponse {
         val url = Constants.CITY_BASE_URL + "searchJSON"
         return bodyOrThrow {
             client.get(url) {

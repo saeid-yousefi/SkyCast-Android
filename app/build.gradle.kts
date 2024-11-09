@@ -27,5 +27,9 @@ dependencies {
     implementation(project(":feature-splash:splash-domain"))
     implementation(project(":feature-splash:splash-ui"))
 
+    implementation(project(":feature-home:home-data"))
+    implementation(project(":feature-home:home-domain"))
+    implementation(project(":feature-home:home-ui"))
+
     implementation(libs.datastore)
 }

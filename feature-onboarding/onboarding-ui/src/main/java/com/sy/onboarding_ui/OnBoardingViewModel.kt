@@ -2,9 +2,12 @@ package com.sy.onboarding_ui
 
 import androidx.lifecycle.viewModelScope
 import com.sy.common_ui.base.BaseViewModel
+import com.sy.common_ui.graphs.RootGraphs
+import com.sy.spash_domain.usecases.SetFirstLaunchUseCase
 import kotlinx.coroutines.launch
 
-class OnBoardingViewModel : BaseViewModel<OnBoardingState, OnBoardingEffect, OnBoardingAction>() {
+class OnBoardingViewModel constructor(private val setFirstLaunchUseCase: SetFirstLaunchUseCase) :
+    BaseViewModel<OnBoardingState, OnBoardingEffect, OnBoardingAction>() {
 
     override fun createInitialState(): OnBoardingState {
         return OnBoardingState()
@@ -18,6 +21,8 @@ class OnBoardingViewModel : BaseViewModel<OnBoardingState, OnBoardingEffect, OnB
                 is OnBoardingAction.NextOnBoard -> {
                     val currentPageIndex = currentState.currentPageIndex + 1
                     if (currentPageIndex >= 4) {
+                        setFirstLaunchUseCase(false)
+                        setEffect(OnBoardingEffect.NavigateTo(RootGraphs.Home.route))
 
                     } else {
                         setState {

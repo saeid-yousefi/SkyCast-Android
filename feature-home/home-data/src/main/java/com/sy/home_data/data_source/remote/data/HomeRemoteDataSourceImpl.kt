@@ -6,6 +6,6 @@ import com.sy.home_data.model.dto.GeoNameResponse
 class HomeRemoteDataSourceImpl(private val homeApiService: HomeApiService) : HomeRemoteDataSource {
 
     override suspend fun searchCity(cityName: String): List<GeoNameResponse> {
-        return homeApiService.searchCity(cityName)
+        return homeApiService.searchCity(cityName).geoNames
     }
 }

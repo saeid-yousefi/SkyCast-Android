@@ -36,10 +36,10 @@ class SplashViewModel(
     private suspend fun checkIsFirstLaunch() {
         val isFirstLaunch = isFirstLaunchUseCase(Unit)
         if (isFirstLaunch) {
-//            delay(2000)
+            delay(2000)
             setEffect(SplashEffect.NavigateTo(RootGraphs.OnBoarding.route))
         } else {
-
+            setEffect(SplashEffect.NavigateTo(RootGraphs.Home.route))
         }
     }
 }

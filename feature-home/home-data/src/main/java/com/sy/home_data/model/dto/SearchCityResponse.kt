@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SearchCityResponse(
-    @SerialName("geonames") val geoNames: List<GeoNameResponse>? = null
+    @SerialName("geonames") val geoNames: List<GeoNameResponse>
 )
