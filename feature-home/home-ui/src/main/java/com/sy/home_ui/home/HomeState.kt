@@ -1,3 +1,5 @@
 package com.sy.home_ui.home
 
-data class HomeState(val id:Int=0)
+import com.sy.home_domain.model.GeoName
+
+data class HomeState(val geoName: GeoName? = null)
