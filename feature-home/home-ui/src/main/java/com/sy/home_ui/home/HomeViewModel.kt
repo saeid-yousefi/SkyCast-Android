@@ -49,6 +49,7 @@ class HomeViewModel(private val searchCityUseCase: SearchCityUseCase) :
                     if (System.currentTimeMillis() - lastTimeSearchCalled >= timeInterval) {
                         lastTimeSearchCalled = System.currentTimeMillis()
                         searchJob = Job()
+                        Log.e("CITY NAME", state.value.cityInput.text.toString())
                         searchCity()
                     }
                 }
@@ -58,12 +59,8 @@ class HomeViewModel(private val searchCityUseCase: SearchCityUseCase) :
 
 
     private suspend fun searchCity() {
-        searchJob = viewModelScope.launch(Dispatchers.IO) {
-            searchCityUseCase(currentState.cityInput.text ?: "").collect {
-                if (it is OutCome.Success) {
-                    Log.e("CITY NAME", currentState.cityInput.text ?: "")
-                    Log.e("CITY LIST", it.data.toString())
-                }
+        viewModelScope.launch(Dispatchers.IO + searchJob) {
+            searchCityUseCase(state.value.cityInput.text ?: "").collect {
                 setState { copy(citiesResult = it) }
             }
         }

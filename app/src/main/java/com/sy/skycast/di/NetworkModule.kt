@@ -3,6 +3,7 @@ package com.sy.skycast.di
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -22,7 +23,7 @@ val networkModule = module {
                 })
             }
             install(Logging) {
-                logger = Logger.DEFAULT
+                logger = Logger.ANDROID
                 level = LogLevel.BODY
             }
         }
