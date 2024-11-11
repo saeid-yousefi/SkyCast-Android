@@ -30,7 +30,7 @@ abstract class BaseViewModel<UiState, Effect, Action> :
 
     abstract fun submitAction(action: Action)
 
-    abstract fun updateTextInput(inputId: Int, value: String)
+    abstract fun updateTextInput(inputId: Int, text: String?)
 
     suspend fun setState(reduce: UiState.() -> UiState) {
         withContext(Dispatchers.Main) {

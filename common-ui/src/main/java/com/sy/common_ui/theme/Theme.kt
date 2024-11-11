@@ -15,7 +15,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = CharcoalBlueDark,
     onPrimary = Color.White,
     background = CharcoalBlue,
-    onBackground = Color.Black,
+    onBackground = Color.White,
     secondary = CharcoalBlueDark,
     tertiary = Pink80
 )
@@ -57,6 +57,7 @@ fun SkyCastTheme(
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
+            shapes = Shapes,
             content = content
         )
     }
