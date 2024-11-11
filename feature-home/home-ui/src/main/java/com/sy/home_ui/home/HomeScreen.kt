@@ -2,16 +2,15 @@
 
 package com.sy.home_ui.home
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -115,6 +114,9 @@ fun HomeScreen(
                                 text = it
                             )
                         )
+                        if (it.length >= 2) {
+                            actionRunner(HomeAction.SearchCity)
+                        }
                     },
                     onDismissRequest = {
                         actionRunner(HomeAction.ChangeCityBottomSheetVisibility(false))
@@ -132,6 +134,7 @@ fun CityBottomSheet(
     citiesResult: OutCome<List<GeoName>>? = null
 ) {
     val sheetState = rememberModalBottomSheetState()
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -168,37 +171,32 @@ fun CityBottomSheet(
             Spacer(modifier = Modifier.height(LocalDimens.current.paddingMedium))
             if (citiesResult is OutCome.Success) {
                 with(citiesResult) {
-                    AnimatedVisibility(visible = data.isNotEmpty()) {
-                        FlowRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(
-                                LocalDimens.current.paddingSmall
-                            )
-                        ) {
-                            data.forEach {
-                                AssistChip(
-                                    shape = MaterialTheme.shapes.medium,
-                                    colors = AssistChipDefaults.assistChipColors(
-                                        containerColor = MaterialTheme.colorScheme.onBackground.copy(
-                                            0.8f
-                                        ),
-                                        labelColor = MaterialTheme.colorScheme.secondary
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        items(data) {
+                            AssistChip(
+                                shape = MaterialTheme.shapes.medium,
+                                colors = AssistChipDefaults.assistChipColors(
+                                    containerColor = MaterialTheme.colorScheme.onBackground.copy(
+                                        0.8f
                                     ),
-                                    border = null,
-                                    onClick = {
-                                        onDismissRequest()
-                                    },
-                                    label = {
-                                        Text(
-                                            text = "${it.name ?: stringResource(id = R.string.unknown)}, ${
-                                                it.state ?: stringResource(
-                                                    id = R.string.unknown
-                                                )
-                                            }, ${it.countryName ?: stringResource(id = R.string.unknown)}",
-                                            modifier = Modifier.padding(horizontal = LocalDimens.current.paddingMedium)
-                                        )
-                                    })
-                            }
+                                    labelColor = MaterialTheme.colorScheme.secondary
+                                ),
+                                border = null,
+                                onClick = {
+                                    onDismissRequest()
+                                },
+                                label = {
+                                    Text(
+                                        text = "${it.name ?: stringResource(id = R.string.unknown)}, ${
+                                            it.state ?: stringResource(
+                                                id = R.string.unknown
+                                            )
+                                        }, ${it.countryName ?: stringResource(id = R.string.unknown)}",
+                                        modifier = Modifier.padding(horizontal = LocalDimens.current.paddingMedium)
+                                    )
+                                })
                         }
                     }
                 }
