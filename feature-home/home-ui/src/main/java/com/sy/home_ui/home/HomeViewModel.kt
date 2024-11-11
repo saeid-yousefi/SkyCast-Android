@@ -8,6 +8,7 @@ import com.sy.home_domain.usecase.SearchCityUseCase
 import com.sy.home_ui.home.HomeAction.ChangeCityBottomSheetVisibility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val searchCityUseCase: SearchCityUseCase) :
