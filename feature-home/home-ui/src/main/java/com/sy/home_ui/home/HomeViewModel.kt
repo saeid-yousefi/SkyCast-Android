@@ -36,6 +36,12 @@ class HomeViewModel(private val searchCityUseCase: SearchCityUseCase) :
         }
     }
 
+    private suspend fun searchCity() {
+        searchCityUseCase(currentState.cityInput.text ?: "").collect {
+            setState { copy(citiesResult = it) }
+        }
+    }
+
     companion object {
         const val CITY_INPUT: Int = 1
     }

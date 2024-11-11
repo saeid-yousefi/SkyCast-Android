@@ -1,23 +1,31 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 
 package com.sy.home_ui.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -27,9 +35,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.sy.common_domain.model.OutCome
 import com.sy.common_ui.textfield.TextFieldInput
 import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.LocalDimens
+import com.sy.home_domain.model.GeoName
 import com.sy.home_ui.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -97,6 +107,7 @@ fun HomeScreen(
             if (viewState.isCityBottomSheetVisible) {
                 CityBottomSheet(
                     cityInput = viewState.cityInput,
+                    citiesResult = viewState.citiesResult,
                     updateTextInput = {
                         actionRunner(
                             HomeAction.UpdateTextInput(
@@ -117,7 +128,8 @@ fun HomeScreen(
 fun CityBottomSheet(
     cityInput: TextFieldInput,
     updateTextInput: (String) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    citiesResult: OutCome<List<GeoName>>? = null
 ) {
     val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(
@@ -130,22 +142,67 @@ fun CityBottomSheet(
                 .fillMaxSize()
                 .padding(LocalDimens.current.paddingMedium)
         ) {
-            OutlinedTextField(
+            TextField(
                 value = cityInput.text ?: "",
                 onValueChange = { updateTextInput(it) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.city),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                },
                 shape = MaterialTheme.shapes.large,
                 textStyle = MaterialTheme.typography.bodyMedium,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                    unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                    cursorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
+                    cursorColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.3f),
                 )
             )
-
+            Spacer(modifier = Modifier.height(LocalDimens.current.paddingMedium))
+            if (citiesResult is OutCome.Success) {
+                with(citiesResult) {
+                    AnimatedVisibility(visible = data.isNotEmpty()) {
+                        FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                LocalDimens.current.paddingSmall
+                            )
+                        ) {
+                            data.forEach {
+                                AssistChip(
+                                    shape = MaterialTheme.shapes.medium,
+                                    colors = AssistChipDefaults.assistChipColors(
+                                        containerColor = MaterialTheme.colorScheme.onBackground.copy(
+                                            0.8f
+                                        ),
+                                        labelColor = MaterialTheme.colorScheme.secondary
+                                    ),
+                                    border = null,
+                                    onClick = {
+                                        onDismissRequest()
+                                    },
+                                    label = {
+                                        Text(
+                                            text = "${it.name ?: stringResource(id = R.string.unknown)}, ${
+                                                it.state ?: stringResource(
+                                                    id = R.string.unknown
+                                                )
+                                            }, ${it.countryName ?: stringResource(id = R.string.unknown)}",
+                                            modifier = Modifier.padding(horizontal = LocalDimens.current.paddingMedium)
+                                        )
+                                    })
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

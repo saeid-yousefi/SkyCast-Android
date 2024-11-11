@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_city_selected">Select a city</string>
+    <string name="unknown">unknown</string>
+    <string name="city">City</string>
 </resources>
