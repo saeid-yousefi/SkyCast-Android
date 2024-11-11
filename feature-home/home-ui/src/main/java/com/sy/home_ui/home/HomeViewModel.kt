@@ -1,6 +1,8 @@
 package com.sy.home_ui.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.sy.common_domain.model.OutCome
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.home_domain.usecase.SearchCityUseCase
 import com.sy.home_ui.home.HomeAction.ChangeCityBottomSheetVisibility
@@ -58,6 +60,10 @@ class HomeViewModel(private val searchCityUseCase: SearchCityUseCase) :
     private suspend fun searchCity() {
         searchJob = viewModelScope.launch(Dispatchers.IO) {
             searchCityUseCase(currentState.cityInput.text ?: "").collect {
+                if (it is OutCome.Success) {
+                    Log.e("CITY NAME", currentState.cityInput.text ?: "")
+                    Log.e("CITY LIST", it.data.toString())
+                }
                 setState { copy(citiesResult = it) }
             }
         }
