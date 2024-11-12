@@ -30,8 +30,6 @@ abstract class BaseViewModel<UiState, Effect, Action> :
 
     abstract fun submitAction(action: Action)
 
-    abstract suspend fun updateTextInput(inputId: Int, text: String?)
-
     suspend fun setState(reduce: UiState.() -> UiState) {
         withContext(Dispatchers.Main) {
             val newState = currentState.reduce()

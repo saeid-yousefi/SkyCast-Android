@@ -2,6 +2,11 @@
 
 package com.sy.home_ui.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
@@ -9,11 +14,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,19 +33,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.sy.common_domain.model.OutCome
-import com.sy.common_ui.textfield.TextFieldInput
 import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.home_domain.model.GeoName
@@ -45,9 +55,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(navController: NavController, snackbarHostState: SnackbarHostState) {
     val viewModel = koinViewModel<HomeViewModel>()
+
     HomeScreen(
         navController = navController,
         snackbarHostState = snackbarHostState,
+        homeTextFields = viewModel.homeTextFields,
         viewModel = viewModel
     )
 }
@@ -56,10 +68,12 @@ fun HomeScreen(navController: NavController, snackbarHostState: SnackbarHostStat
 fun HomeScreen(
     navController: NavController,
     snackbarHostState: SnackbarHostState,
+    homeTextFields: HomeTextFields,
     viewModel: HomeViewModel
 ) {
     HomeScreen(
         snackbarHostState = snackbarHostState,
+        homeTextFields = homeTextFields,
         viewState = viewModel.state.collectAsState().value
     ) { action ->
         when (action) {
@@ -74,6 +88,7 @@ fun HomeScreen(
 @Composable
 fun HomeScreen(
     snackbarHostState: SnackbarHostState,
+    homeTextFields: HomeTextFields,
     viewState: HomeState,
     actionRunner: (HomeAction) -> Unit
 ) {
@@ -105,16 +120,8 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(innerPadding)) {
             if (viewState.isCityBottomSheetVisible) {
                 CityBottomSheet(
-                    cityInput = viewState.cityInput,
+                    searchTextField = homeTextFields.searchCityTextFieldState,
                     citiesResult = viewState.citiesResult,
-                    updateTextInput = {
-                        actionRunner(
-                            HomeAction.UpdateTextInput(
-                                id = HomeViewModel.CITY_INPUT,
-                                text = it
-                            )
-                        )
-                    },
                     onDismissRequest = {
                         actionRunner(HomeAction.ChangeCityBottomSheetVisibility(false))
                     })
@@ -125,8 +132,7 @@ fun HomeScreen(
 
 @Composable
 fun CityBottomSheet(
-    cityInput: TextFieldInput,
-    updateTextInput: (String) -> Unit,
+    searchTextField: TextFieldState,
     onDismissRequest: () -> Unit,
     citiesResult: OutCome<List<GeoName>>? = null
 ) {
@@ -142,29 +148,43 @@ fun CityBottomSheet(
                 .fillMaxSize()
                 .padding(LocalDimens.current.paddingMedium)
         ) {
-            TextField(
-                value = cityInput.text ?: "",
-                onValueChange = { updateTextInput(it) },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                label = {
-                    Text(
-                        text = stringResource(id = R.string.city),
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                },
-                shape = MaterialTheme.shapes.large,
-                textStyle = MaterialTheme.typography.bodyMedium,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
-                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
-                    cursorColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.3f),
-                )
+            BasicTextField(
+                state = searchTextField,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSecondary),
+                lineLimits = TextFieldLineLimits.SingleLine,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+                decorator = { textFieldContent ->
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(48.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.secondary.copy(0.5f),
+                                shape = MaterialTheme.shapes.large
+                            )
+                            .padding(horizontal = LocalDimens.current.paddingMedium),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        textFieldContent()
+                        this@Column.AnimatedVisibility(
+                            visible = citiesResult is OutCome.Loading,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(24.dp),
+                                    color = MaterialTheme.colorScheme.onSecondary.copy(0.5f)
+                                )
+                            }
+                        }
+                    }
+                }
             )
+
             Spacer(modifier = Modifier.height(LocalDimens.current.paddingMedium))
             if (citiesResult is OutCome.Success) {
                 with(citiesResult) {

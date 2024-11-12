@@ -22,8 +22,6 @@ class SplashViewModel(
         return SplashState(1)
     }
 
-    override suspend fun updateTextInput(inputId: Int, text: String?) {}
-
     override fun submitAction(action: SplashAction) {
         viewModelScope.launch {
             when (action) {

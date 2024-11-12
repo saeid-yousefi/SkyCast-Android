@@ -28,6 +28,7 @@ class ComposeLibraryPlugin : Plugin<Project> {
                 add("implementation", platform(libs.findLibrary("androidx-compose-bom").get()))
                 add("implementation", libs.findLibrary("androidx-ui").get())
                 add("implementation", libs.findLibrary("androidx-compose-navigation").get())
+                add("implementation", libs.findLibrary("androidx-compose-foundation").get())
                 add("implementation", libs.findLibrary("androidx.ui.graphics").get())
                 add("implementation", libs.findLibrary("androidx.material3").get())
                 add("debugImplementation", libs.findLibrary("androidx-ui-tooling").get())

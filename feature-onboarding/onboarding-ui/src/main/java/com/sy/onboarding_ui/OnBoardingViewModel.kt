@@ -13,8 +13,6 @@ class OnBoardingViewModel constructor(private val setFirstLaunchUseCase: SetFirs
         return OnBoardingState()
     }
 
-    override suspend fun updateTextInput(inputId: Int, text: String?) {}
-
     override fun submitAction(action: OnBoardingAction) {
         viewModelScope.launch {
             when (action) {
@@ -26,9 +24,7 @@ class OnBoardingViewModel constructor(private val setFirstLaunchUseCase: SetFirs
 
                     } else {
                         setState {
-                            copy(
-                                currentPageIndex = currentPageIndex,
-                            )
+                            copy(currentPageIndex = currentPageIndex)
                         }
                     }
                 }
