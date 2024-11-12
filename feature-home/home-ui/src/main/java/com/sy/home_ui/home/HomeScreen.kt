@@ -122,6 +122,7 @@ fun HomeScreen(
                 CityBottomSheet(
                     searchTextField = homeTextFields.searchCityTextFieldState,
                     citiesResult = viewState.citiesResult,
+                    onConfirm = {},
                     onDismissRequest = {
                         actionRunner(HomeAction.ChangeCityBottomSheetVisibility(false))
                     })
@@ -133,11 +134,11 @@ fun HomeScreen(
 @Composable
 fun CityBottomSheet(
     searchTextField: TextFieldState,
+    onConfirm: (GeoName) -> Unit,
     onDismissRequest: () -> Unit,
     citiesResult: OutCome<List<GeoName>>? = null
 ) {
-    val sheetState = rememberModalBottomSheetState()
-
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -165,7 +166,15 @@ fun CityBottomSheet(
                             .padding(horizontal = LocalDimens.current.paddingMedium),
                         contentAlignment = Alignment.CenterStart
                     ) {
+                        if (searchTextField.text.isEmpty()) {
+                            Text(
+                                text = stringResource(id = R.string.city),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)
+                            )
+                        }
                         textFieldContent()
+
                         this@Column.AnimatedVisibility(
                             visible = citiesResult is OutCome.Loading,
                             enter = fadeIn(),
