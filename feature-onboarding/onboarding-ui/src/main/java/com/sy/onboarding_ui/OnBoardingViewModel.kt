@@ -13,7 +13,7 @@ class OnBoardingViewModel constructor(private val setFirstLaunchUseCase: SetFirs
         return OnBoardingState()
     }
 
-    override fun updateTextInput(inputId: Int, text: String?) {}
+    override suspend fun updateTextInput(inputId: Int, text: String?) {}
 
     override fun submitAction(action: OnBoardingAction) {
         viewModelScope.launch {

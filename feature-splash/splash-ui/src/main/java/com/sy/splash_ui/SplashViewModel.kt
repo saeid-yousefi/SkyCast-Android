@@ -22,7 +22,7 @@ class SplashViewModel(
         return SplashState(1)
     }
 
-    override fun updateTextInput(inputId: Int, text: String?) {}
+    override suspend fun updateTextInput(inputId: Int, text: String?) {}
 
     override fun submitAction(action: SplashAction) {
         viewModelScope.launch {

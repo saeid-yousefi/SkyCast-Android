@@ -29,8 +29,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -116,9 +114,6 @@ fun HomeScreen(
                                 text = it
                             )
                         )
-                        if (it.length >= 2) {
-                            actionRunner(HomeAction.SearchCity)
-                        }
                     },
                     onDismissRequest = {
                         actionRunner(HomeAction.ChangeCityBottomSheetVisibility(false))
@@ -136,9 +131,7 @@ fun CityBottomSheet(
     citiesResult: OutCome<List<GeoName>>? = null
 ) {
     val sheetState = rememberModalBottomSheetState()
-    val text = remember {
-        mutableStateOf(cityInput)
-    }
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,

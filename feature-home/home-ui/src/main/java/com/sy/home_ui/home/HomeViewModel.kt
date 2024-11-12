@@ -1,34 +1,48 @@
+@file:OptIn(FlowPreview::class)
+
 package com.sy.home_ui.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.sy.common_domain.model.OutCome
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.home_domain.usecase.SearchCityUseCase
 import com.sy.home_ui.home.HomeAction.ChangeCityBottomSheetVisibility
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val searchCityUseCase: SearchCityUseCase) :
     BaseViewModel<HomeState, HomeEffect, HomeAction>() {
 
-    private val timeInterval = 300
-    private var lastTimeSearchCalled: Long = 0
+    private val debounceInterval = 300L
+    private var searchJob: Job? = null
+    private val citySearchFlow = MutableStateFlow("")
 
-    private var searchJob: Job = Job()
+    init {
+        viewModelScope.launch {
+            citySearchFlow
+                .debounce(debounceInterval)
+                .filter { it.length >= 2 }
+                .distinctUntilChanged()
+                .collect { query ->
+                    searchCity(query)
+                }
+        }
+    }
 
     override fun createInitialState(): HomeState {
         return HomeState()
     }
 
-    override fun updateTextInput(inputId: Int, text: String?) {
-        viewModelScope.launch(Dispatchers.Main) {
-            when (inputId) {
-                CITY_INPUT -> {
-                    setState { copy(cityInput = cityInput.copy(text = text)) }
-                }
+    override suspend fun updateTextInput(inputId: Int, text: String?) {
+        when (inputId) {
+            CITY_INPUT -> {
+                setState { copy(cityInput = cityInput.copy(text = text)) }
+                text?.let { citySearchFlow.emit(it) }
             }
         }
     }
@@ -42,26 +56,18 @@ class HomeViewModel(private val searchCityUseCase: SearchCityUseCase) :
             }
 
             is HomeAction.UpdateTextInput -> {
-                updateTextInput(inputId = action.id, text = action.text)
-            }
-
-            HomeAction.SearchCity -> {
-                viewModelScope.launch {
-                    if (System.currentTimeMillis() - lastTimeSearchCalled >= timeInterval) {
-                        lastTimeSearchCalled = System.currentTimeMillis()
-                        searchJob = Job()
-                        Log.e("CITY NAME", state.value.cityInput.text.toString())
-                        searchCity()
-                    }
+                viewModelScope.launch(Dispatchers.IO) {
+                    updateTextInput(inputId = action.id, text = action.text)
                 }
             }
         }
     }
 
 
-    private suspend fun searchCity() {
-        viewModelScope.launch(Dispatchers.IO + searchJob) {
-            searchCityUseCase(state.value.cityInput.text ?: "").collect {
+    private suspend fun searchCity(query: String) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch(Dispatchers.IO) {
+            searchCityUseCase(query).collect {
                 setState { copy(citiesResult = it) }
             }
         }
