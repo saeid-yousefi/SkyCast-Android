@@ -61,6 +61,10 @@ gradlePlugin {
             id = "skycast.ktor"
             implementationClass = "com.sy.convention.plugin.KtorPlugin"
         }
+        register("kotlinSerialization") {
+            id = "skycast.serialization"
+            implementationClass = "com.sy.convention.plugin.KotlinSerializationPlugin"
+        }
         register("DataStorePlugin") {
             id = "skycast.datastore"
             implementationClass = "com.sy.convention.plugin.DataStorePlugin"

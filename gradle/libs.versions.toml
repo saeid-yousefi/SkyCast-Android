@@ -82,6 +82,7 @@ skycast-test-android = { id = "skycast.uitest", version = "unspecified" }
 skycast-test-unit = { id = "skycast.unittest", version = "unspecified" }
 skycast-async = { id = "skycast.async", version = "unspecified" }
 skycast-di = { id = "skycast.koin", version = "unspecified" }
+skycast-serialization = { id = "skycast.serialization", version = "unspecified" }
 skycast-network = { id = "skycast.ktor", version = "unspecified" }
 skycast-datastore = { id = "skycast.datastore", version = "unspecified" }
 

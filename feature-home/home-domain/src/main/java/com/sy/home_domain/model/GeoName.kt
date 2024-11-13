@@ -1,5 +1,8 @@
 package com.sy.home_domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class GeoName(
     val lng: String? = null,
     val lat: String? = null,
