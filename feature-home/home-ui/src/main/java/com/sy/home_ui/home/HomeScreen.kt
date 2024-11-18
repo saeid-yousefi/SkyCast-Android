@@ -122,7 +122,9 @@ fun HomeScreen(
                 CityBottomSheet(
                     searchTextField = homeTextFields.searchCityTextFieldState,
                     citiesResult = viewState.citiesResult,
-                    onConfirm = {},
+                    onConfirm = {
+                        actionRunner(HomeAction.SaveCity(it))
+                    },
                     onDismissRequest = {
                         actionRunner(HomeAction.ChangeCityBottomSheetVisibility(false))
                     })
@@ -211,6 +213,7 @@ fun CityBottomSheet(
                                 ),
                                 border = null,
                                 onClick = {
+                                    onConfirm(it)
                                     onDismissRequest()
                                 },
                                 label = {

@@ -26,8 +26,8 @@ class HomeRepositoryImpl(
     }
 
     override suspend fun observeCity(): Flow<GeoName?> {
-        return dataStore.data.map { value: Preferences ->
-            value[CITY_KEY]?.let {
+        return dataStore.data.map { preferences ->
+            preferences[CITY_KEY]?.let {
                 Json.decodeFromString<GeoName>(it)
             }
         }
