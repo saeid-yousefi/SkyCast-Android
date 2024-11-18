@@ -5,16 +5,20 @@ package com.sy.home_ui.home
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
@@ -22,9 +26,11 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +38,9 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -41,13 +49,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.sy.common_domain.model.OutCome
+import com.sy.common_ui.composables.AppTab
 import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.LocalDimens
+import com.sy.common_ui.theme.PinkRose
 import com.sy.home_domain.model.GeoName
 import com.sy.home_ui.R
 import org.koin.androidx.compose.koinViewModel
@@ -129,6 +140,68 @@ fun HomeScreen(
                         actionRunner(HomeAction.ChangeCityBottomSheetVisibility(false))
                     })
             }
+            if (viewState.geoName == null) {
+                EmptyCity {
+                    actionRunner(HomeAction.ChangeCityBottomSheetVisibility(true))
+                }
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AppTab(
+                        text = stringResource(id = R.string.today),
+                        selected = false,
+                        modifier = Modifier.weight(1f)
+                    ) {}
+                    AppTab(
+                        text = stringResource(id = R.string.forecast),
+                        selected = true,
+                        modifier = Modifier.weight(1f)
+                    ) {}
+                }
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.5f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun EmptyCity(onButtonClicked: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            modifier = Modifier.fillMaxWidth(0.4f),
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = R.drawable.img_location),
+            contentDescription = ""
+        )
+        Spacer(modifier = Modifier.height(LocalDimens.current.paddingMedium))
+        Text(
+            text = stringResource(id = R.string.no_city_selected_desc),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(LocalDimens.current.paddingMedium))
+
+        TextButton(
+            onClick = onButtonClicked,
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = PinkRose
+            )
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = LocalDimens.current.paddingMedium),
+                text = stringResource(id = R.string.select_city),
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
     }
 }
@@ -202,13 +275,12 @@ fun CityBottomSheet(
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        items(data) {
+                        items(data, key = { geoName -> geoName.geoNameId ?: 0 }) {
                             AssistChip(
                                 shape = MaterialTheme.shapes.medium,
                                 colors = AssistChipDefaults.assistChipColors(
-                                    containerColor = MaterialTheme.colorScheme.onBackground.copy(
-                                        0.8f
-                                    ),
+                                    containerColor = MaterialTheme.colorScheme.onBackground
+                                        .copy(0.8f),
                                     labelColor = MaterialTheme.colorScheme.secondary
                                 ),
                                 border = null,

@@ -7,7 +7,9 @@ val CharcoalBlueDark = Color(0xFF2C2D35)
 
 val Grey = Color(0xFFF2F4F7)
 val GreyDark = Color(0xFFBCC8D6)
+val GraySlate = Color(0xFF868794)
 
+val PinkRose = Color(0xFFF07399)
 val PinkLight = Color(0xFFFF4F80)
 val PinkDark = Color(0xFFC23ACC)
 
