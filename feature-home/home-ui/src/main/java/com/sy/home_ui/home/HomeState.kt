@@ -6,6 +6,7 @@ import com.sy.home_ui.home_contents.today.TodayState
 
 data class HomeState(
     val geoName: GeoName? = null,
+    val selectedPagerIndex: Int = 0,
     val citiesResult: OutCome<List<GeoName>>? = null,
     val isCityBottomSheetVisible: Boolean = false,
     val todayState: TodayState = TodayState()
