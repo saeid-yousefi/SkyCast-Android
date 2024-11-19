@@ -19,18 +19,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -40,10 +40,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,12 +54,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.sy.common_domain.model.OutCome
+import com.sy.common_ui.composables.AppCenterAlignedTopAppBar
 import com.sy.common_ui.composables.AppTab
 import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.common_ui.theme.PinkRose
 import com.sy.home_domain.model.GeoName
 import com.sy.home_ui.R
+import com.sy.home_ui.home_contents.today.TodayScreen
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -81,16 +84,23 @@ fun HomeScreen(
     homeTextFields: HomeTextFields,
     viewModel: HomeViewModel
 ) {
+    val pagerState = rememberPagerState { HomeTabs.size }
+    val scope = rememberCoroutineScope()
     HomeScreen(
         snackbarHostState = snackbarHostState,
         homeTextFields = homeTextFields,
+        pagerState = pagerState,
         viewState = viewModel.state.collectAsState().value
     ) { action ->
         when (action) {
-
-            else -> {
-                viewModel.submitAction(action)
+            is HomeAction.ChangePagerState -> {
+                scope.launch {
+                    pagerState.animateScrollToPage(action.index)
+                }
             }
+
+            else -> viewModel.submitAction(action)
+
         }
     }
 }
@@ -99,34 +109,18 @@ fun HomeScreen(
 fun HomeScreen(
     snackbarHostState: SnackbarHostState,
     homeTextFields: HomeTextFields,
+    pagerState: PagerState,
     viewState: HomeState,
     actionRunner: (HomeAction) -> Unit
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = if (viewState.geoName == null) stringResource(id = R.string.no_city_selected) else viewState.geoName.name.toString(),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
-                actions = {
-                    IconButton(
-                        onClick = {
-                            actionRunner(HomeAction.ChangeCityBottomSheetVisibility(true))
-                        },
-                        modifier = Modifier.padding(LocalDimens.current.paddingMedium),
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_add_location),
-                            contentDescription = ""
-                        )
-                    }
-                }
-            )
-        }, snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
+            AppCenterAlignedTopAppBar(
+                title = if (viewState.geoName == null) stringResource(id = R.string.no_city_selected) else viewState.geoName.name.toString(),
+                actionIconId = R.drawable.ic_add_location,
+                onActionClick = { actionRunner(HomeAction.ChangeCityBottomSheetVisibility(true)) })
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             if (viewState.isCityBottomSheetVisible) {
                 CityBottomSheet(
@@ -145,12 +139,12 @@ fun HomeScreen(
                 }
             } else {
                 ScrollableTabRow(
-                    selectedTabIndex = viewState.selectedPagerIndex,
+                    selectedTabIndex = pagerState.currentPage,
                     containerColor = Color.Transparent,
                     indicator = { tabPositions ->
                         Box(
                             modifier = Modifier
-                                .tabIndicatorOffset(tabPositions[viewState.selectedPagerIndex])
+                                .tabIndicatorOffset(tabPositions[pagerState.currentPage])
                                 .height(1.dp)
                                 .padding(horizontal = LocalDimens.current.paddingMedium)
                                 .background(MaterialTheme.colorScheme.onBackground)
@@ -160,7 +154,7 @@ fun HomeScreen(
                     HomeTabs.forEachIndexed { index, textId ->
                         AppTab(
                             text = stringResource(id = textId),
-                            selected = index == viewState.selectedPagerIndex,
+                            selected = index == pagerState.currentPage,
                         ) {
                             actionRunner(HomeAction.ChangePagerState(index))
                         }
@@ -170,6 +164,12 @@ fun HomeScreen(
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.onBackground.copy(0.5f)
                 )
+                HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { page ->
+                    when (page) {
+                        0 -> TodayScreen(state = viewState.todayState)
+                        1 -> Text(text = "SALAM")
+                    }
+                }
             }
         }
     }

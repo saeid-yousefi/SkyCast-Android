@@ -9,9 +9,7 @@ import com.sy.home_domain.model.GeoName
 import com.sy.home_domain.usecase.ObserveCityUseCase
 import com.sy.home_domain.usecase.SaveCityUseCase
 import com.sy.home_domain.usecase.SearchCityUseCase
-import com.sy.home_ui.home.HomeAction.ChangeCityBottomSheetVisibility
-import com.sy.home_ui.home.HomeAction.ChangePagerState
-import com.sy.home_ui.home.HomeAction.SaveCity
+import com.sy.home_ui.home.HomeAction.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -46,15 +44,10 @@ class HomeViewModel(
         when (action) {
             is ChangeCityBottomSheetVisibility -> handleCityBottomSheetVisibility(action.isVisible)
             is SaveCity -> saveCity(action.geoName)
-            is ChangePagerState -> handlePagerState(action.index)
+            else -> {}
         }
     }
 
-    private fun handlePagerState(index: Int) {
-        viewModelScope.launch {
-            setState { copy(selectedPagerIndex = index) }
-        }
-    }
 
     private fun handleCityBottomSheetVisibility(isVisible: Boolean) {
         viewModelScope.launch {
