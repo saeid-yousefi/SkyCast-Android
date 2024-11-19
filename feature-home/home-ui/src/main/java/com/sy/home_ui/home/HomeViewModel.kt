@@ -6,10 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.common_ui.ext.textAsFlow
 import com.sy.home_domain.model.GeoName
+import com.sy.home_domain.usecase.GetCurrentDateUseCase
 import com.sy.home_domain.usecase.ObserveCityUseCase
 import com.sy.home_domain.usecase.SaveCityUseCase
 import com.sy.home_domain.usecase.SearchCityUseCase
-import com.sy.home_ui.home.HomeAction.*
+import com.sy.home_ui.home.HomeAction.ChangeCityBottomSheetVisibility
+import com.sy.home_ui.home.HomeAction.SaveCity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
+    private val getCurrentDateUseCase: GetCurrentDateUseCase,
     private val searchCityUseCase: SearchCityUseCase,
     private val saveCityUseCase: SaveCityUseCase,
     private val observeCityUseCase: ObserveCityUseCase,
@@ -35,10 +38,10 @@ class HomeViewModel(
     init {
         observeHomeTextFields()
         observeSelectedCity()
+        getCurrentDate()
     }
 
     override fun createInitialState() = HomeState()
-
 
     override fun submitAction(action: HomeAction) {
         when (action) {
@@ -87,6 +90,15 @@ class HomeViewModel(
         searchJob = viewModelScope.launch(Dispatchers.IO) {
             searchCityUseCase(query).collect {
                 setState { copy(citiesResult = it) }
+            }
+        }
+    }
+
+    private fun getCurrentDate() {
+        viewModelScope.launch {
+            getCurrentDateUseCase(Unit).let {
+                val todayState = currentState.todayState.copy(todayDate = it)
+                setState { copy(todayState = todayState) }
             }
         }
     }

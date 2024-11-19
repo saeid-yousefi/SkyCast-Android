@@ -6,7 +6,6 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.sy.common_ui.theme.GraySlate
 import com.sy.common_ui.theme.LocalDimens
 
 @Composable
@@ -15,7 +14,7 @@ fun AppTab(modifier: Modifier = Modifier, text: String, selected: Boolean, onCli
         Text(
             text = text,
             modifier = Modifier.padding(LocalDimens.current.paddingMedium),
-            color = if (selected) MaterialTheme.colorScheme.onBackground else GraySlate,
+            color = if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.tertiary,
             style = MaterialTheme.typography.bodyMedium
         )
     }

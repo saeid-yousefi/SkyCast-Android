@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.sy.common_ui.theme.LocalDimens
 
@@ -30,7 +31,16 @@ fun TodayScreen(state: TodayState) {
             ),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = state.todayDate, textAlign = TextAlign.Center)
+            Text(
+                modifier = Modifier.padding(
+                    horizontal = LocalDimens.current.paddingMedium,
+                    vertical = LocalDimens.current.paddingSmall
+                ),
+                text = state.todayDate,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
+                color = MaterialTheme.colorScheme.tertiary
+            )
         }
     }
 }

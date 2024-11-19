@@ -6,3 +6,6 @@ plugins {
 dependencies{
     api(project(":common-domain"))
 }
+dependencies {
+    implementation(libs.kotlinx.datetime)
+}
