@@ -7,6 +7,7 @@ import com.sy.common_ui.base.BaseViewModel
 import com.sy.common_ui.ext.textAsFlow
 import com.sy.home_domain.model.GeoName
 import com.sy.home_domain.usecase.GetCurrentDateUseCase
+import com.sy.home_domain.usecase.GetCurrentWeatherDataUseCase
 import com.sy.home_domain.usecase.ObserveCityUseCase
 import com.sy.home_domain.usecase.SaveCityUseCase
 import com.sy.home_domain.usecase.SearchCityUseCase
@@ -25,6 +26,7 @@ class HomeViewModel(
     private val searchCityUseCase: SearchCityUseCase,
     private val saveCityUseCase: SaveCityUseCase,
     private val observeCityUseCase: ObserveCityUseCase,
+    private val getCurrentWeatherDataUseCase: GetCurrentWeatherDataUseCase
 ) :
     BaseViewModel<HomeState, HomeEffect, HomeAction>() {
 
@@ -79,8 +81,11 @@ class HomeViewModel(
 
     private fun observeSelectedCity() {
         viewModelScope.launch {
-            observeCityUseCase(Unit).collect {
-                setState { copy(geoName = it) }
+            observeCityUseCase(Unit).collect { geoName ->
+                setState { copy(geoName = geoName) }
+                geoName?.name?.let {
+                    getCurrentWeatherData(it)
+                }
             }
         }
     }
@@ -100,6 +105,13 @@ class HomeViewModel(
                 val todayState = currentState.todayState.copy(todayDate = it)
                 setState { copy(todayState = todayState) }
             }
+        }
+    }
+
+    private suspend fun getCurrentWeatherData(cityName: String) {
+        getCurrentWeatherDataUseCase(cityName).collect {
+            val todayState = currentState.todayState.copy(currentWeatherResult = it)
+            setState { copy(todayState = todayState) }
         }
     }
 }
