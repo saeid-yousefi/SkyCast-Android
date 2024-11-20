@@ -1,3 +1,8 @@
 package com.sy.home_data.model.dto
 
-data class CurrentWeatherResponse(val weather: List<WeatherResponse>, val main: MainResponse)
+import com.sy.home_domain.model.weather.CurrentWeather
+
+data class CurrentWeatherResponse(val weather: List<WeatherResponse>, val main: MainResponse) {
+    fun toCurrentWeather() =
+        CurrentWeather(weather = weather.map { it.toWeather() }, main = main.toMain())
+}

@@ -31,6 +31,7 @@ class ComposeApplicationPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx-compose-foundation").get())
                 add("implementation", libs.findLibrary("androidx.ui.graphics").get())
                 add("implementation", libs.findLibrary("androidx.material3").get())
+                add("implementation", libs.findLibrary("coil").get())
                 add("debugImplementation", libs.findLibrary("androidx-ui-tooling").get())
                 add("debugImplementation", libs.findLibrary("androidx-ui-test-manifest").get())
             }

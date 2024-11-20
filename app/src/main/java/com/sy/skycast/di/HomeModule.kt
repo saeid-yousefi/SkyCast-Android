@@ -1,9 +1,7 @@
 package com.sy.skycast.di
 
-import com.sy.home_data.data_source.remote.api.HomeApiService
-import com.sy.home_data.data_source.remote.api.HomeApiServiceImpl
-import com.sy.home_data.data_source.remote.data.HomeRemoteDataSource
-import com.sy.home_data.data_source.remote.data.HomeRemoteDataSourceImpl
+import com.sy.home_data.data_source.remote.HomeRemoteDataSource
+import com.sy.home_data.data_source.remote.HomeRemoteDataSourceImpl
 import com.sy.home_data.repository.HomeRepositoryImpl
 import com.sy.home_domain.repository.HomeRepository
 import com.sy.home_domain.usecase.GetCurrentDateUseCase
@@ -18,7 +16,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val homeModule = module {
-    singleOf(::HomeApiServiceImpl) bind HomeApiService::class
     singleOf(::HomeRemoteDataSourceImpl) bind HomeRemoteDataSource::class
     singleOf(::HomeRepositoryImpl) bind HomeRepository::class
     factoryOf(::SearchCityUseCase)

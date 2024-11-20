@@ -10,3 +10,7 @@ fun NavController.popAndNavigate(route: String) {
 }
 
 fun TextFieldState.textAsFlow() = snapshotFlow { text }
+
+fun String.toImageUrl(): String {
+    return "https://openweathermap.org/img/wn/$this@4x.png"
+}

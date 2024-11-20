@@ -29,6 +29,7 @@ composeMaterial = "1.4.0"
 kotlinxSerializationPlugin = "2.0.20"
 kotlinxSerialization = "1.7.3"
 kotlixDateTime = "0.4.0"
+coil = "3.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +66,7 @@ ktor-logger = { group = "io.ktor", name = "ktor-client-logging", version.ref = "
 ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
+coil = {group = "io.coil-kt.coil3", name = "coil-compose" , version.ref = "coil"}
 
 
 [plugins]

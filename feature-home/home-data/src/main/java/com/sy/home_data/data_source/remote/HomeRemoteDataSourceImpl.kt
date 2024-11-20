@@ -1,4 +1,4 @@
-package com.sy.home_data.data_source.remote.api
+package com.sy.home_data.data_source.remote
 
 import com.sy.common_data.Constants
 import com.sy.common_data.network.bodyOrThrow
@@ -8,7 +8,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
-class HomeApiServiceImpl(private val client: HttpClient) : HomeApiService {
+class HomeRemoteDataSourceImpl(private val client: HttpClient) : HomeRemoteDataSource {
 
     override suspend fun searchCity(cityName: String): SearchCityResponse {
         val url = Constants.CITY_BASE_URL + "searchJSON"
@@ -29,6 +29,5 @@ class HomeApiServiceImpl(private val client: HttpClient) : HomeApiService {
                 parameter("q", cityName)
             }
         }
-
     }
 }
