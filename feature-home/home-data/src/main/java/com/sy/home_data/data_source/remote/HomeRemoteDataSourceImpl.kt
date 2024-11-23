@@ -22,11 +22,12 @@ class HomeRemoteDataSourceImpl(private val client: HttpClient) : HomeRemoteDataS
     }
 
     override suspend fun getCurrentWeatherData(cityName: String): CurrentWeatherResponse {
-        val url = Constants.WEATHER_BASE_URL + "/data/2.5/weather"
+        val url = Constants.WEATHER_BASE_URL + "data/2.5/weather"
         return bodyOrThrow {
             client.get(url) {
                 parameter(Constants.WEATHER_APP_ID_KEY, Constants.WEATHER_APP_ID)
                 parameter("q", cityName)
+                parameter("units","metric")
             }
         }
     }

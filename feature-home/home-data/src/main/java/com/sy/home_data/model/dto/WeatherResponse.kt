@@ -6,7 +6,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WeatherResponse(val main: String, val description: String, val icon: String) {
-    private fun iconNameToWeatherType(apiWeather: String): WeatherType {
+
+    fun toWeather() = Weather(main, description, weatherStringToWeatherType(description))
+
+    private fun weatherStringToWeatherType(apiWeather: String): WeatherType {
         return when (apiWeather.lowercase()) {
             "clear sky" -> WeatherType.SUNNY
             "few clouds", "scattered clouds", "broken clouds", "overcast clouds" -> WeatherType.CLOUDY
@@ -17,7 +20,5 @@ data class WeatherResponse(val main: String, val description: String, val icon: 
             else -> WeatherType.UNKNOWN
         }
     }
-
-    fun toWeather() = Weather(main, description, iconNameToWeatherType(icon))
 }
 

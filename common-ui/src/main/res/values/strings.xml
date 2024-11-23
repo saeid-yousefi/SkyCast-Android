@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="validation_field_is_empty">Field is empty</string>
+    <string name="weather_c_unit">°C</string>
+    <string name="weather_unit">°</string>
 </resources>

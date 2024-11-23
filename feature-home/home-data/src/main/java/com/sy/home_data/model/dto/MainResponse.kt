@@ -7,9 +7,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MainResponse(
     val temp: Float,
+    @SerialName("feels_like") val feelsLike: Float?,
     @SerialName("temp_min") val tempMin: Float?,
     @SerialName("temp_max") val tempMax: Float?,
     val humidity: Float?
 ) {
-    fun toMain() = Main(temp, tempMin, tempMax, humidity)
+    fun toMain() = Main(temp, tempMin, tempMax, feelsLike, humidity)
 }
