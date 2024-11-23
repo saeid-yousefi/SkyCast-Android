@@ -1,6 +1,6 @@
 package com.sy.home_data.model.dto
 
-import com.sy.home_domain.model.GeoName
+import com.sy.common_domain.model.GeoName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -3,6 +3,7 @@ package com.sy.common_ui.composables
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,20 +25,23 @@ fun RemoteImage(
         mutableStateOf(false)
     }
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
         AsyncImage(
             model = imageUrl,
             contentDescription = contentDescription,
-            modifier = Modifier.fillMaxSize(),
             contentScale = contentScale,
             onLoading = { isLoading = true },
             onSuccess = { isLoading = false },
-            onError = { isLoading = false }
+            onError = {
+                println(it)
+                isLoading = false
+            }
         )
 
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }

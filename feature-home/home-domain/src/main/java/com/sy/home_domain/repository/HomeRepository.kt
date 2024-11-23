@@ -1,7 +1,7 @@
 package com.sy.home_domain.repository
 
-import com.sy.home_domain.model.GeoName
-import com.sy.home_domain.model.weather.CurrentWeather
+import com.sy.common_domain.model.GeoName
+import com.sy.common_domain.model.weather.CurrentWeather
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {

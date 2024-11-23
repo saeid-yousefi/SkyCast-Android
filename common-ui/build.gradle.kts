@@ -8,3 +8,7 @@ plugins {
 android {
     namespace = "com.sy.common_ui"
 }
+
+dependencies{
+    implementation(project(":common-domain"))
+}

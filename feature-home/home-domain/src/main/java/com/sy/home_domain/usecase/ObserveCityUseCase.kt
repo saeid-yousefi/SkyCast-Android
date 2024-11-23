@@ -1,7 +1,7 @@
 package com.sy.home_domain.usecase
 
 import com.sy.common_domain.usecase.ValueUseCase
-import com.sy.home_domain.model.GeoName
+import com.sy.common_domain.model.GeoName
 import com.sy.home_domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
 

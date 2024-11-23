@@ -59,7 +59,7 @@ import com.sy.common_ui.composables.AppTab
 import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.common_ui.theme.PinkRose
-import com.sy.home_domain.model.GeoName
+import com.sy.common_domain.model.GeoName
 import com.sy.home_ui.R
 import com.sy.home_ui.home_contents.today.TodayScreen
 import kotlinx.coroutines.launch
@@ -166,7 +166,7 @@ fun HomeScreen(
                 )
                 HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { page ->
                     when (page) {
-                        0 -> TodayScreen(state = viewState.todayState)
+                        0 -> TodayScreen(viewState = viewState.todayState)
                         1 -> Text(text = "SALAM")
                     }
                 }

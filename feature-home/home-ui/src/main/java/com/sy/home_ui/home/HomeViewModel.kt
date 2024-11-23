@@ -5,7 +5,7 @@ package com.sy.home_ui.home
 import androidx.lifecycle.viewModelScope
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.common_ui.ext.textAsFlow
-import com.sy.home_domain.model.GeoName
+import com.sy.common_domain.model.GeoName
 import com.sy.home_domain.usecase.GetCurrentDateUseCase
 import com.sy.home_domain.usecase.GetCurrentWeatherDataUseCase
 import com.sy.home_domain.usecase.ObserveCityUseCase

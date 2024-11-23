@@ -67,6 +67,7 @@ ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation"
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
 coil = {group = "io.coil-kt.coil3", name = "coil-compose" , version.ref = "coil"}
+coil-network = {group = "io.coil-kt.coil3", name = "coil-network-okhttp" , version.ref = "coil"}
 
 
 [plugins]

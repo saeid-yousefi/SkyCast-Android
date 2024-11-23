@@ -1,6 +1,6 @@
 package com.sy.home_data.model.dto
 
-import com.sy.home_domain.model.weather.Main
+import com.sy.common_domain.model.weather.Main
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

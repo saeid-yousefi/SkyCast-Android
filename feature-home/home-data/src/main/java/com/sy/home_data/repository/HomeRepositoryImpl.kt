@@ -5,8 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sy.home_data.data_source.remote.HomeRemoteDataSource
-import com.sy.home_domain.model.GeoName
-import com.sy.home_domain.model.weather.CurrentWeather
+import com.sy.common_domain.model.GeoName
+import com.sy.common_domain.model.weather.CurrentWeather
 import com.sy.home_domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

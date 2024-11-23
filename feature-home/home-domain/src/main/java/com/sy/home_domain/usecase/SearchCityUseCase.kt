@@ -1,7 +1,7 @@
 package com.sy.home_domain.usecase
 
 import com.sy.common_domain.usecase.ResultUseCase
-import com.sy.home_domain.model.GeoName
+import com.sy.common_domain.model.GeoName
 import com.sy.home_domain.repository.HomeRepository
 
 class SearchCityUseCase(private val repository: HomeRepository) :
