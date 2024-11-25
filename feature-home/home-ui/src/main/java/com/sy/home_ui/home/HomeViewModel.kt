@@ -3,9 +3,11 @@
 package com.sy.home_ui.home
 
 import androidx.lifecycle.viewModelScope
+import com.sy.common_domain.model.GeoName
+import com.sy.common_domain.model.OutCome
+import com.sy.common_domain.model.weather.CurrentWeather
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.common_ui.ext.textAsFlow
-import com.sy.common_domain.model.GeoName
 import com.sy.home_domain.usecase.GetCurrentDateUseCase
 import com.sy.home_domain.usecase.GetCurrentWeatherDataUseCase
 import com.sy.home_domain.usecase.ObserveCityUseCase
@@ -49,6 +51,12 @@ class HomeViewModel(
         when (action) {
             is ChangeCityBottomSheetVisibility -> handleCityBottomSheetVisibility(action.isVisible)
             is SaveCity -> saveCity(action.geoName)
+            is HomeAction.GetCurrentWeather -> {
+                viewModelScope.launch {
+                    getCurrentWeatherData(action.cityName)
+                }
+            }
+
             else -> {}
         }
     }
@@ -110,7 +118,14 @@ class HomeViewModel(
 
     private suspend fun getCurrentWeatherData(cityName: String) {
         getCurrentWeatherDataUseCase(cityName).collect {
-            val todayState = currentState.todayState.copy(currentWeatherResult = it)
+            var currentWeather: CurrentWeather? = currentState.todayState.currentWeather
+            if (it is OutCome.Success) {
+                currentWeather = it.data
+            }
+            val todayState = currentState.todayState.copy(
+                currentWeatherResult = it,
+                currentWeather = currentWeather
+            )
             setState { copy(todayState = todayState) }
         }
     }

@@ -5,5 +5,6 @@ import com.sy.common_domain.model.weather.CurrentWeather
 
 data class TodayState(
     val currentWeatherResult: OutCome<CurrentWeather>? = null,
+    val currentWeather: CurrentWeather? = null,
     val todayDate: String = ""
 )

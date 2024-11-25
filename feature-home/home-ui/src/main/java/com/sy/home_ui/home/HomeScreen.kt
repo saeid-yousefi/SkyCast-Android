@@ -53,13 +53,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.sy.common_domain.model.GeoName
 import com.sy.common_domain.model.OutCome
 import com.sy.common_ui.composables.AppCenterAlignedTopAppBar
 import com.sy.common_ui.composables.AppTab
 import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.common_ui.theme.PinkRose
-import com.sy.common_domain.model.GeoName
 import com.sy.home_ui.R
 import com.sy.home_ui.home_contents.today.TodayScreen
 import kotlinx.coroutines.launch
@@ -164,9 +164,20 @@ fun HomeScreen(
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.onBackground.copy(0.5f)
                 )
-                HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { page ->
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.fillMaxSize(),
+                    userScrollEnabled = false
+                ) { page ->
                     when (page) {
-                        0 -> TodayScreen(viewState = viewState.todayState)
+                        0 -> TodayScreen(
+                            viewState = viewState.todayState,
+                            onRefresh = {
+                                viewState.geoName.name?.let {
+                                    actionRunner(HomeAction.GetCurrentWeather(it))
+                                }
+                            })
+
                         1 -> Text(text = "SALAM")
                     }
                 }

@@ -12,5 +12,11 @@ data class MainResponse(
     @SerialName("temp_max") val tempMax: Float?,
     val humidity: Float?
 ) {
-    fun toMain() = Main(temp, tempMin, tempMax, feelsLike, humidity)
+    fun toMain() = Main(
+        temp = temp,
+        tempMin = tempMin,
+        tempMax = tempMax,
+        feelsLike = feelsLike,
+        humidity = humidity
+    )
 }
