@@ -12,14 +12,13 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DashedLine(color: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)) {
+fun DashedLine(color: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)) {
     val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f), 0f)
     Canvas(
         Modifier
             .fillMaxWidth()
             .height(1.dp)
     ) {
-
         drawLine(
             color = color,
             start = Offset(0f, 0f),

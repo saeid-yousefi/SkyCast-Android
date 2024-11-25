@@ -49,7 +49,6 @@ fun TodayScreen(viewState: TodayState, onRefresh: () -> Unit) {
     val context = LocalContext.current
     val refreshState = rememberPullToRefreshState()
 
-
     PullToRefreshBox(
         state = refreshState,
         isRefreshing = viewState.currentWeatherResult is OutCome.Loading,
@@ -152,8 +151,10 @@ fun TodayScreen(viewState: TodayState, onRefresh: () -> Unit) {
                     }
                 }
             }
-            item {
-                DashedLine()
+            viewState.currentWeather?.let {
+                item {
+                    DashedLine()
+                }
             }
         }
     }
