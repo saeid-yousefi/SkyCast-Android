@@ -32,3 +32,7 @@ fun Float.toCentigrade(context: Context, showUnit: Boolean = true): String {
         if (showUnit) context.getString(R.string.weather_c_unit) else context.getString(R.string.weather_unit)
     return "${this.toInt()}$unit"
 }
+
+fun Throwable.toUserMessage(context: Context) {
+
+}

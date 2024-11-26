@@ -3,4 +3,6 @@
     <string name="validation_field_is_empty">Field is empty</string>
     <string name="weather_c_unit">°C</string>
     <string name="weather_unit">°</string>
+    <string name="socket_timeout_error">Timeout error</string>
+    <string name="connection_failed_error">Connection failed, please try again later</string>
 </resources>

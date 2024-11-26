@@ -8,6 +8,9 @@ import com.sy.common_domain.model.OutCome
 import com.sy.common_domain.model.weather.CurrentWeather
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.common_ui.ext.textAsFlow
+import com.sy.common_ui.message_manager.Message
+import com.sy.common_ui.message_manager.MessageBody
+import com.sy.common_ui.message_manager.MessageBroker
 import com.sy.home_domain.usecase.GetCurrentDateUseCase
 import com.sy.home_domain.usecase.GetCurrentWeatherDataUseCase
 import com.sy.home_domain.usecase.ObserveCityUseCase
@@ -24,10 +27,11 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val getCurrentDateUseCase: GetCurrentDateUseCase,
-    private val searchCityUseCase: SearchCityUseCase,
+    private val messageBroker: MessageBroker,
     private val saveCityUseCase: SaveCityUseCase,
+    private val searchCityUseCase: SearchCityUseCase,
     private val observeCityUseCase: ObserveCityUseCase,
+    private val getCurrentDateUseCase: GetCurrentDateUseCase,
     private val getCurrentWeatherDataUseCase: GetCurrentWeatherDataUseCase
 ) :
     BaseViewModel<HomeState, HomeEffect, HomeAction>() {
@@ -121,6 +125,13 @@ class HomeViewModel(
             var currentWeather: CurrentWeather? = currentState.todayState.currentWeather
             if (it is OutCome.Success) {
                 currentWeather = it.data
+            }
+            if (it is OutCome.Failure) {
+                messageBroker.sendMessage(
+                    Message(
+                        messageBody = MessageBody(throwable = it.throwable),
+                        action = { submitAction(HomeAction.GetCurrentWeather(cityName)) })
+                )
             }
             val todayState = currentState.todayState.copy(
                 currentWeatherResult = it,

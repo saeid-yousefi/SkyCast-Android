@@ -45,7 +45,10 @@ import com.sy.home_ui.R
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodayScreen(viewState: TodayState, onRefresh: () -> Unit) {
+fun TodayScreen(
+    viewState: TodayState,
+    onRefresh: () -> Unit
+) {
     val context = LocalContext.current
     val refreshState = rememberPullToRefreshState()
 
