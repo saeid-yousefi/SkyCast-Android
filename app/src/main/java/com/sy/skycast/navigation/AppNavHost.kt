@@ -11,12 +11,12 @@ import com.sy.splash_ui.SplashScreen
 import com.sy.splash_ui.navigation.SplashScreens
 
 @Composable
-fun AppNavHost(navController: NavHostController, snackbarHostState: SnackbarHostState) {
+fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = SplashScreens.Main.route) {
         composable(route = SplashScreens.Main.route) {
             SplashScreen(navController)
         }
         onboardingNavGraph(navController)
-        homeNavGraph(navController, snackbarHostState)
+        homeNavGraph(navController)
     }
 }

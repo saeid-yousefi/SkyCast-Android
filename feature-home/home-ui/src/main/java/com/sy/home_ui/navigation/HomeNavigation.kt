@@ -10,11 +10,10 @@ import com.sy.home_ui.home.HomeScreen
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavController,
-    snackbarHostState: SnackbarHostState
 ) {
     navigation(startDestination = HomeScreens.Main.route, route = RootGraphs.Home.route) {
         composable(route = HomeScreens.Main.route) {
-            HomeScreen(navController = navController, snackbarHostState = snackbarHostState)
+            HomeScreen(navController = navController)
         }
     }
 }

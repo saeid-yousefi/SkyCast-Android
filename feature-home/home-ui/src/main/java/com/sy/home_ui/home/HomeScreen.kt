@@ -35,15 +35,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -68,12 +64,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen(navController: NavController, snackbarHostState: SnackbarHostState) {
+fun HomeScreen(navController: NavController) {
     val viewModel = koinViewModel<HomeViewModel>()
 
     HomeScreen(
         navController = navController,
-        snackbarHostState = snackbarHostState,
         homeTextFields = viewModel.homeTextFields,
         viewModel = viewModel
     )
@@ -82,7 +77,6 @@ fun HomeScreen(navController: NavController, snackbarHostState: SnackbarHostStat
 @Composable
 fun HomeScreen(
     navController: NavController,
-    snackbarHostState: SnackbarHostState,
     homeTextFields: HomeTextFields,
     viewModel: HomeViewModel
 ) {
@@ -90,7 +84,6 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
 
     HomeScreen(
-        snackbarHostState = snackbarHostState,
         homeTextFields = homeTextFields,
         pagerState = pagerState,
         viewState = viewModel.state.collectAsState().value
@@ -110,7 +103,6 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreen(
-    snackbarHostState: SnackbarHostState,
     homeTextFields: HomeTextFields,
     pagerState: PagerState,
     viewState: HomeState,
@@ -122,8 +114,7 @@ fun HomeScreen(
                 title = if (viewState.geoName == null) stringResource(id = R.string.no_city_selected) else viewState.geoName.name.toString(),
                 actionIconId = R.drawable.ic_add_location,
                 onActionClick = { actionRunner(HomeAction.ChangeCityBottomSheetVisibility(true)) })
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
+        }) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             if (viewState.isCityBottomSheetVisible) {
                 CityBottomSheet(
@@ -177,6 +168,7 @@ fun HomeScreen(
                             viewState = viewState.todayState,
                             onRefresh = {
                                 viewState.geoName.name?.let {
+                                    actionRunner(HomeAction.GetCurrentDate)
                                     actionRunner(HomeAction.GetCurrentWeather(it))
                                 }
                             })
