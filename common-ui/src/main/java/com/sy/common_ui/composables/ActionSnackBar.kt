@@ -1,5 +1,6 @@
 package com.sy.common_ui.composables
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +25,9 @@ fun ActionSnackBarHost(snackbarHostState: SnackbarHostState) {
                 .padding(12.dp),
             action = {
                 visual?.actionLabel?.let {
-                    TextButton(onClick = { visual.action }) {
+                    TextButton(onClick = {
+                        visual.action()
+                    }) {
                         Text(text = it)
                     }
                 }
