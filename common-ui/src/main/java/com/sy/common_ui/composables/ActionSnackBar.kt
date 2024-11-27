@@ -25,9 +25,7 @@ fun ActionSnackBarHost(snackbarHostState: SnackbarHostState) {
                 .padding(12.dp),
             action = {
                 visual?.actionLabel?.let {
-                    TextButton(onClick = {
-                        visual.action()
-                    }) {
+                    TextButton(onClick = { visual.action() }) {
                         Text(text = it)
                     }
                 }
