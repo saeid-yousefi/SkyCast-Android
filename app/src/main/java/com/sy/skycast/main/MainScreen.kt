@@ -20,9 +20,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val snackbarHostState = remember { SnackbarHostState() }
     val viewModel = koinViewModel<MainViewModel>()
     val context = LocalContext.current
+
+    val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(key1 = viewModel.effect) {
         viewModel.effect.collect {
             when (it) {
@@ -40,7 +41,6 @@ fun MainScreen() {
             }
         }
     }
-
     Scaffold(
         snackbarHost = {
             ActionSnackBarHost(snackbarHostState = snackbarHostState)

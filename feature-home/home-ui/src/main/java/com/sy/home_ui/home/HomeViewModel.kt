@@ -2,6 +2,7 @@
 
 package com.sy.home_ui.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.sy.common_domain.model.GeoName
 import com.sy.common_domain.model.OutCome
@@ -48,6 +49,18 @@ class HomeViewModel(
         observeHomeTextFields()
         observeSelectedCity()
         getCurrentDate()
+
+        viewModelScope.launch {
+            delay(3000)
+            messageBroker.sendMessage(
+                message = Message(
+                    messageBody = MessageBody("hello"),
+                    actionButton = "HELLO",
+                    action = {
+                        Log.e("hello", "hello")
+                    })
+            )
+        }
     }
 
     override fun createInitialState() = HomeState()
