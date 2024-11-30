@@ -2,7 +2,6 @@
 
 package com.sy.home_ui.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.sy.common_domain.model.GeoName
 import com.sy.common_domain.model.OutCome
@@ -22,7 +21,6 @@ import com.sy.home_ui.home.HomeAction.SaveCity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -49,18 +47,6 @@ class HomeViewModel(
         observeHomeTextFields()
         observeSelectedCity()
         getCurrentDate()
-
-        viewModelScope.launch {
-            delay(3000)
-            messageBroker.sendMessage(
-                message = Message(
-                    messageBody = MessageBody("hello"),
-                    actionButton = "HELLO",
-                    action = {
-                        Log.e("hello", "hello")
-                    })
-            )
-        }
     }
 
     override fun createInitialState() = HomeState()
@@ -69,16 +55,10 @@ class HomeViewModel(
         when (action) {
             is ChangeCityBottomSheetVisibility -> handleCityBottomSheetVisibility(action.isVisible)
             is SaveCity -> saveCity(action.geoName)
-            is HomeAction.GetCurrentWeather -> {
-                viewModelScope.launch {
-                    getCurrentWeatherData(action.cityName)
-                }
-            }
+            is HomeAction.GetCurrentWeather ->
+                viewModelScope.launch { getCurrentWeatherData(action.cityName) }
 
-            is HomeAction.GetCurrentDate -> {
-                getCurrentDate()
-            }
-
+            is HomeAction.GetCurrentDate -> getCurrentDate()
             else -> {}
         }
     }

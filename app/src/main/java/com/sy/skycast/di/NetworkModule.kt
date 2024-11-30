@@ -23,9 +23,9 @@ val networkModule = module {
                 })
             }
             install(HttpTimeout) {
-                requestTimeoutMillis = 10000
-                connectTimeoutMillis = 10000
-                socketTimeoutMillis = 10000
+                requestTimeoutMillis = 10_000
+                connectTimeoutMillis = 10_000
+                socketTimeoutMillis = 10_000
             }
             install(Logging) {
                 logger = Logger.ANDROID
