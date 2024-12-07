@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -86,43 +87,54 @@ fun TodayScreen(
                     )
                 }
             }
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    viewState.currentWeather?.let {
+            viewState.currentWeather?.let {
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
                         with(it) {
                             Column(
                                 modifier = Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Image(
-                                    contentScale = ContentScale.Fit,
+                                    contentScale = ContentScale.FillHeight,
                                     modifier = Modifier
-                                        .size(120.dp),
+                                        .fillMaxWidth()
+                                        .height(120.dp),
                                     painter = painterResource(id = weather.first().weatherType.toDrawableId()),
                                     contentDescription = ""
                                 )
+                                Spacer(modifier = Modifier.height(LocalDimens.current.paddingSmall))
                                 main.feelsLike?.let {
-                                    MultiStyleText(
-                                        text1 = weather.first().main + " | " + stringResource(id = R.string.feels_like),
-                                        style1 = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
-                                        text2 = it.toCentigrade(context),
-                                        style2 = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground)
-                                    )
+                                    Box(
+                                        modifier = Modifier.height(25.dp),
+                                        contentAlignment = Alignment.BottomCenter
+                                    ) {
+                                        MultiStyleText(
+                                            text1 = weather.first().main + " | " + stringResource(id = R.string.feels_like),
+                                            style1 = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
+                                            text2 = it.toCentigrade(context),
+                                            style2 = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground)
+                                        )
+                                    }
                                 }
                             }
                             Column(
                                 modifier = Modifier.weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally,
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Box(modifier = Modifier.size(120.dp)) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(120.dp),
+                                ) {
                                     Text(
-                                        modifier = Modifier
-                                            .fillMaxSize(),
-                                        text = main.temp.toCentigrade(context, false),
-                                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 90.sp)
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        text = main.temp.toInt().toString(),
+                                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 80.sp)
                                             .copy(
                                                 shadow = Shadow(
                                                     color = Color.Black.copy(0.2f),
@@ -132,9 +144,10 @@ fun TodayScreen(
                                             )
                                     )
                                     Text(
-                                        modifier = Modifier.fillMaxSize(),
-                                        text = main.temp.toCentigrade(context, false),
-                                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 90.sp)
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        text = main.temp.toInt().toString(),
+                                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 80.sp)
                                             .copy(
                                                 brush = Brush.verticalGradient(
                                                     colors = listOf(
@@ -145,12 +158,17 @@ fun TodayScreen(
                                             )
                                     )
                                 }
-                                Text(
-                                    text = weather.first().description,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    style = MaterialTheme.typography.bodyLarge
-                                )
-
+                                Spacer(modifier = Modifier.height(LocalDimens.current.paddingSmall))
+                                Box(
+                                    modifier = Modifier.height(25.dp),
+                                    contentAlignment = Alignment.BottomCenter
+                                ) {
+                                    Text(
+                                        text = weather.first().description,
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }
                             }
                         }
                     }
