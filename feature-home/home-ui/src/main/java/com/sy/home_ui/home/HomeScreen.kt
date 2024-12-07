@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.sy.common_domain.model.GeoName
@@ -128,7 +129,7 @@ fun HomeScreen(
                     })
             }
             if (viewState.geoName == null) {
-                EmptyCity {
+                CityNotSelected {
                     actionRunner(HomeAction.ChangeCityBottomSheetVisibility(true))
                 }
             } else {
@@ -182,9 +183,11 @@ fun HomeScreen(
 }
 
 @Composable
-fun EmptyCity(onButtonClicked: () -> Unit) {
+fun CityNotSelected(onButtonClicked: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(LocalDimens.current.paddingLarge),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -197,6 +200,7 @@ fun EmptyCity(onButtonClicked: () -> Unit) {
         Spacer(modifier = Modifier.height(LocalDimens.current.paddingMedium))
         Text(
             text = stringResource(id = R.string.no_city_selected_desc),
+            textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyMedium
         )

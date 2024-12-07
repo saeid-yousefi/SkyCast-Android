@@ -8,4 +8,6 @@
     <string name="today">Today</string>
     <string name="forecast">Forecast</string>
     <string name="feels_like">Feels like</string>
+    <string name="humidity">Humidity:</string>
+    <string name="wind">Wind:</string>
 </resources>

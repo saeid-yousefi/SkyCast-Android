@@ -7,11 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sy.common_domain.model.OutCome
 import com.sy.common_ui.composables.DashedLine
@@ -93,14 +95,12 @@ fun TodayScreen(
                         with(it) {
                             Column(
                                 modifier = Modifier.weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(LocalDimens.current.paddingMedium)
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Image(
                                     contentScale = ContentScale.Fit,
                                     modifier = Modifier
-                                        .fillMaxWidth(0.8f)
-                                        .aspectRatio(1.5f),
+                                        .size(120.dp),
                                     painter = painterResource(id = weather.first().weatherType.toDrawableId()),
                                     contentDescription = ""
                                 )
@@ -117,8 +117,10 @@ fun TodayScreen(
                                 modifier = Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
-                                Box {
+                                Box(modifier = Modifier.size(120.dp)) {
                                     Text(
+                                        modifier = Modifier
+                                            .fillMaxSize(),
                                         text = main.temp.toCentigrade(context, false),
                                         style = MaterialTheme.typography.titleLarge.copy(fontSize = 90.sp)
                                             .copy(
@@ -130,7 +132,7 @@ fun TodayScreen(
                                             )
                                     )
                                     Text(
-                                        modifier = Modifier.wrapContentSize(unbounded = true),
+                                        modifier = Modifier.fillMaxSize(),
                                         text = main.temp.toCentigrade(context, false),
                                         style = MaterialTheme.typography.titleLarge.copy(fontSize = 90.sp)
                                             .copy(
@@ -158,8 +160,49 @@ fun TodayScreen(
                 item {
                     DashedLine()
                 }
+                item {
+                    Row(Modifier.fillMaxWidth()) {
+                        IconItem(
+                            iconId = R.drawable.img_humidity,
+                            textId = R.string.humidity,
+                            textValue = it.main.humidity.toString() + "%",
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconItem(
+                            iconId = R.drawable.img_wind,
+                            textId = R.string.wind,
+                            textValue = it.wind.speed.toString(),
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
             }
         }
     }
+}
 
+@Composable
+fun IconItem(iconId: Int, textId: Int, textValue: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier = Modifier.then(modifier),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = iconId),
+            contentDescription = "",
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = stringResource(id = textId),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            text = textValue,
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
 }
