@@ -41,6 +41,7 @@ class HomeViewModel(
     }
 
     private var searchJob: Job? = null
+    private var getCurrentWeatherJob: Job? = null
     val homeTextFields = HomeTextFields()
 
     init {
@@ -55,8 +56,7 @@ class HomeViewModel(
         when (action) {
             is ChangeCityBottomSheetVisibility -> handleCityBottomSheetVisibility(action.isVisible)
             is SaveCity -> saveCity(action.geoName)
-            is HomeAction.GetCurrentWeather ->
-                viewModelScope.launch { getCurrentWeatherData(action.cityName) }
+            is HomeAction.GetCurrentWeather -> getCurrentWeatherData(action.cityName)
 
             is HomeAction.GetCurrentDate -> getCurrentDate()
             else -> {}
@@ -118,24 +118,27 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun getCurrentWeatherData(cityName: String) {
-        getCurrentWeatherDataUseCase(cityName).collect {
-            var currentWeather: CurrentWeather? = currentState.todayState.currentWeather
-            if (it is OutCome.Success) {
-                currentWeather = it.data
-            }
-            if (it is OutCome.Failure) {
-                messageBroker.sendMessage(
-                    Message(
-                        messageBody = MessageBody(throwable = it.throwable),
-                        action = { submitAction(HomeAction.GetCurrentWeather(cityName)) })
+    private fun getCurrentWeatherData(cityName: String) {
+        getCurrentWeatherJob?.cancel()
+        getCurrentWeatherJob = viewModelScope.launch {
+            getCurrentWeatherDataUseCase(cityName).collect {
+                var currentWeather: CurrentWeather? = currentState.todayState.currentWeather
+                if (it is OutCome.Success) {
+                    currentWeather = it.data
+                }
+                if (it is OutCome.Failure) {
+                    messageBroker.sendMessage(
+                        Message(
+                            messageBody = MessageBody(throwable = it.throwable),
+                            action = { submitAction(HomeAction.GetCurrentWeather(cityName)) })
+                    )
+                }
+                val todayState = currentState.todayState.copy(
+                    currentWeatherResult = it,
+                    currentWeather = currentWeather
                 )
+                setState { copy(todayState = todayState) }
             }
-            val todayState = currentState.todayState.copy(
-                currentWeatherResult = it,
-                currentWeather = currentWeather
-            )
-            setState { copy(todayState = todayState) }
         }
     }
 }
