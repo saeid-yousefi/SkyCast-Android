@@ -202,7 +202,7 @@ fun CityNotSelected(onButtonClicked: () -> Unit) {
             text = stringResource(id = R.string.no_city_selected_desc),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.height(LocalDimens.current.paddingMedium))
 

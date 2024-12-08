@@ -217,6 +217,7 @@ fun IconItem(iconId: Int, textId: Int, textValue: String, modifier: Modifier = M
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onBackground
         )
+        Spacer(modifier = Modifier.width(2.dp))
         Text(
             text = textValue,
             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
