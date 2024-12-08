@@ -3,6 +3,7 @@ package com.sy.home_ui.home_contents.today
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -23,6 +27,8 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -42,6 +48,7 @@ import com.sy.common_ui.ext.toCentigrade
 import com.sy.common_ui.ext.toDrawableId
 import com.sy.common_ui.theme.BlueGray
 import com.sy.common_ui.theme.BlueGrayDark
+import com.sy.common_ui.theme.CharcoalBlueDark
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.home_ui.R
 
@@ -194,7 +201,65 @@ fun TodayScreen(
                         )
                     }
                 }
+                item {
+                    DescribedClickableRow(
+                        title = stringResource(id = R.string.forecast_title),
+                        desc = stringResource(id = R.string.forecast_desc)
+                    ) {
+
+                    }
+                }
             }
+        }
+    }
+}
+
+@Composable
+fun DescribedClickableRow(title: String, desc: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(shape = MaterialTheme.shapes.large.copy(all = CornerSize(48.dp)))
+            .clickable { onClick() }
+            .background(color = CharcoalBlueDark)
+            .padding(
+                top = LocalDimens.current.paddingSmall,
+                bottom = LocalDimens.current.paddingSmall,
+                start = LocalDimens.current.paddingLarge,
+                end = LocalDimens.current.paddingSmall
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Column(verticalArrangement = Arrangement.Center) {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.tertiary,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Spacer(modifier = Modifier.height(LocalDimens.current.paddingSmall))
+            Text(
+                text = desc,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(40.dp)
+                .clip(shape = CircleShape)
+                .background(color = MaterialTheme.colorScheme.background)
+                .clickable { onClick() }
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_down),
+                modifier = Modifier
+                    .rotate(-90f)
+                    .size(12.dp),
+                contentDescription = ""
+            )
         }
     }
 }

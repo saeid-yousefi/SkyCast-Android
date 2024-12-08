@@ -2,6 +2,8 @@
 <resources>
     <string name="no_city_selected">No city selected</string>
     <string name="no_city_selected_desc">City selection is required. Pick one to continue.</string>
+    <string name="forecast_title">See 3 hours forecast</string>
+    <string name="forecast_desc">Plan for the next 3 hours</string>
     <string name="select_city">Select a city to continue</string>
     <string name="unknown">unknown</string>
     <string name="city">City</string>
