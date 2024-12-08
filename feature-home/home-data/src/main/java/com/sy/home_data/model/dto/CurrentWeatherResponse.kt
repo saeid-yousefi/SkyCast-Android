@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CurrentWeatherResponse(
+    val dt: Double? = null,
     val weather: List<WeatherResponse>,
     val main: MainResponse,
     val wind: WindResponse
