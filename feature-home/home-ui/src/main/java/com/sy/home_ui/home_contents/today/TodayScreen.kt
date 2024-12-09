@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,12 +43,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sy.common_domain.model.OutCome
+import com.sy.common_domain.model.weather.WeatherInfo
 import com.sy.common_ui.composables.DashedLine
 import com.sy.common_ui.composables.MultiStyleText
+import com.sy.common_ui.ext.fullTimeToHourMinute
 import com.sy.common_ui.ext.toCentigrade
 import com.sy.common_ui.ext.toDrawableId
 import com.sy.common_ui.theme.BlueGray
 import com.sy.common_ui.theme.BlueGrayDark
+import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.CharcoalBlueDark
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.home_ui.R
@@ -64,7 +68,7 @@ fun TodayScreen(
 
     PullToRefreshBox(
         state = refreshState,
-        isRefreshing = viewState.currentWeatherResult is OutCome.Loading,
+        isRefreshing = viewState.weatherInfoResult is OutCome.Loading,
         onRefresh = onRefresh,
     ) {
         LazyColumn(
@@ -94,7 +98,7 @@ fun TodayScreen(
                     )
                 }
             }
-            viewState.currentWeather?.let {
+            viewState.weatherInfo?.let {
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -181,7 +185,7 @@ fun TodayScreen(
                     }
                 }
             }
-            viewState.currentWeather?.let {
+            viewState.weatherInfo?.let {
                 item {
                     DashedLine()
                 }
@@ -208,6 +212,12 @@ fun TodayScreen(
                     ) {
 
                     }
+                }
+            }
+            println(viewState.forecast)
+            viewState.forecast?.let { forecast ->
+                items(forecast) {
+                    TodayForecast(weatherInfo = it)
                 }
             }
         }
@@ -260,6 +270,43 @@ fun DescribedClickableRow(title: String, desc: String, onClick: () -> Unit) {
                     .size(12.dp),
                 contentDescription = ""
             )
+        }
+    }
+}
+
+@Composable
+fun TodayForecast(weatherInfo: WeatherInfo) {
+    with(weatherInfo) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = MaterialTheme.shapes.large)
+                .clickable { }
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(CharcoalBlue, CharcoalBlueDark)
+                    )
+                )
+                .padding(
+                    top = LocalDimens.current.paddingSmall,
+                    bottom = LocalDimens.current.paddingSmall,
+                    start = LocalDimens.current.paddingLarge,
+                    end = LocalDimens.current.paddingSmall
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = timeText?.fullTimeToHourMinute() ?: "",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Image(
+                modifier = Modifier.weight(1f),
+                painter = painterResource(id = weather.first().weatherType.toDrawableId()),
+                contentDescription = "",
+            )
+            Spacer(modifier = Modifier.weight(6f))
         }
     }
 }

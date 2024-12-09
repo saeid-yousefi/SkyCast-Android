@@ -33,6 +33,7 @@ fun Float.toCentigrade(context: Context, showUnit: Boolean = true): String {
     return "${this.toInt()}$unit"
 }
 
-fun Throwable.toUserMessage(context: Context) {
-
+fun String.fullTimeToHourMinute(): String {
+    val regex = Regex("\\d{2}:\\d{2}")
+    return regex.find(this)?.value.toString()
 }

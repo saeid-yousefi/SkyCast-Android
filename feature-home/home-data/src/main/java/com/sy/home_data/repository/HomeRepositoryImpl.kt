@@ -4,9 +4,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.sy.home_data.data_source.remote.HomeRemoteDataSource
 import com.sy.common_domain.model.GeoName
-import com.sy.common_domain.model.weather.CurrentWeather
+import com.sy.common_domain.model.weather.WeatherInfo
+import com.sy.home_data.data_source.remote.HomeRemoteDataSource
 import com.sy.home_domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -40,7 +40,11 @@ class HomeRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentWeatherData(cityName: String): CurrentWeather {
-        return remoteDataSource.getCurrentWeatherData(cityName).toCurrentWeather()
+    override suspend fun getCurrentWeatherData(cityName: String): WeatherInfo {
+        return remoteDataSource.getCurrentWeatherData(cityName).toWeatherInfo()
+    }
+
+    override suspend fun getForeCast(cityName: String): List<WeatherInfo> {
+        return remoteDataSource.getForecast(cityName).list.map { it.toWeatherInfo() }
     }
 }

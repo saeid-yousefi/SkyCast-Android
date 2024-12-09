@@ -20,7 +20,7 @@ data class MessageBody(val text: String? = null, val throwable: Throwable? = nul
             return text
         }
         return when (throwable) {
-            is ServerException -> return throwable.message.toString()
+            is ServerException -> return throwable.errorMessage
             is SocketTimeoutException -> context?.getString(R.string.socket_timeout_error)!!
             is ConnectException -> context?.getString(R.string.connection_failed_error)!!
             else -> context?.getString(R.string.connection_failed_error)!!

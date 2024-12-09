@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MainResponse(
+data class MainDto(
     val temp: Float,
     @SerialName("feels_like") val feelsLike: Float?,
     @SerialName("temp_min") val tempMin: Float?,

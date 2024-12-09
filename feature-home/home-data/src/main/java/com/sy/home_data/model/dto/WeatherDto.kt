@@ -5,7 +5,7 @@ import com.sy.common_domain.model.weather.WeatherType
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WeatherResponse(val main: String, val description: String, val icon: String) {
+data class WeatherDto(val main: String, val description: String, val icon: String) {
 
     fun toWeather() = Weather(main, description, weatherStringToWeatherType(description))
 

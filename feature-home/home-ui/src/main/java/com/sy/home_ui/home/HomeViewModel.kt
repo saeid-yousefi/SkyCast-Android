@@ -5,14 +5,15 @@ package com.sy.home_ui.home
 import androidx.lifecycle.viewModelScope
 import com.sy.common_domain.model.GeoName
 import com.sy.common_domain.model.OutCome
-import com.sy.common_domain.model.weather.CurrentWeather
+import com.sy.common_domain.model.weather.WeatherInfo
 import com.sy.common_ui.base.BaseViewModel
 import com.sy.common_ui.ext.textAsFlow
 import com.sy.common_ui.message_manager.Message
 import com.sy.common_ui.message_manager.MessageBody
 import com.sy.common_ui.message_manager.MessageBroker
 import com.sy.home_domain.usecase.GetCurrentDateUseCase
-import com.sy.home_domain.usecase.GetCurrentWeatherDataUseCase
+import com.sy.home_domain.usecase.GetForeCastUseCase
+import com.sy.home_domain.usecase.GetWeatherInfoUseCase
 import com.sy.home_domain.usecase.ObserveCityUseCase
 import com.sy.home_domain.usecase.SaveCityUseCase
 import com.sy.home_domain.usecase.SearchCityUseCase
@@ -31,8 +32,9 @@ class HomeViewModel(
     private val saveCityUseCase: SaveCityUseCase,
     private val searchCityUseCase: SearchCityUseCase,
     private val observeCityUseCase: ObserveCityUseCase,
+    private val getForeCastUseCase: GetForeCastUseCase,
     private val getCurrentDateUseCase: GetCurrentDateUseCase,
-    private val getCurrentWeatherDataUseCase: GetCurrentWeatherDataUseCase
+    private val getWeatherInfoUseCase: GetWeatherInfoUseCase,
 ) :
     BaseViewModel<HomeState, HomeEffect, HomeAction>() {
 
@@ -42,6 +44,7 @@ class HomeViewModel(
 
     private var searchJob: Job? = null
     private var getCurrentWeatherJob: Job? = null
+    private var getForecast: Job? = null
     val homeTextFields = HomeTextFields()
 
     init {
@@ -55,9 +58,15 @@ class HomeViewModel(
     override fun submitAction(action: HomeAction) {
         when (action) {
             is ChangeCityBottomSheetVisibility -> handleCityBottomSheetVisibility(action.isVisible)
+            is HomeAction.GetInitialData -> {
+                getCurrentDate()
+                getCurrentWeatherData(action.cityName)
+                getForecast(action.cityName)
+            }
+
             is SaveCity -> saveCity(action.geoName)
             is HomeAction.GetCurrentWeather -> getCurrentWeatherData(action.cityName)
-
+            is HomeAction.GetForecast -> getForecast(action.cityName)
             is HomeAction.GetCurrentDate -> getCurrentDate()
             else -> {}
         }
@@ -94,7 +103,7 @@ class HomeViewModel(
             observeCityUseCase(Unit).collect { geoName ->
                 setState { copy(geoName = geoName) }
                 geoName?.name?.let {
-                    getCurrentWeatherData(it)
+                    submitAction(HomeAction.GetInitialData(it))
                 }
             }
         }
@@ -121,10 +130,10 @@ class HomeViewModel(
     private fun getCurrentWeatherData(cityName: String) {
         getCurrentWeatherJob?.cancel()
         getCurrentWeatherJob = viewModelScope.launch {
-            getCurrentWeatherDataUseCase(cityName).collect {
-                var currentWeather: CurrentWeather? = currentState.todayState.currentWeather
+            getWeatherInfoUseCase(cityName).collect {
+                var weatherInfo: WeatherInfo? = currentState.todayState.weatherInfo
                 if (it is OutCome.Success) {
-                    currentWeather = it.data
+                    weatherInfo = it.data
                 }
                 if (it is OutCome.Failure) {
                     messageBroker.sendMessage(
@@ -134,10 +143,38 @@ class HomeViewModel(
                     )
                 }
                 val todayState = currentState.todayState.copy(
-                    currentWeatherResult = it,
-                    currentWeather = currentWeather
+                    weatherInfoResult = it,
+                    weatherInfo = weatherInfo
                 )
                 setState { copy(todayState = todayState) }
+            }
+        }
+    }
+
+    private fun getForecast(cityName: String) {
+        getForecast?.cancel()
+        getForecast = viewModelScope.launch(Dispatchers.IO) {
+            getForeCastUseCase(cityName).collect {
+                var forecast = currentState.todayState.forecast
+                if (it is OutCome.Success) {
+                    forecast = it.data
+                }
+                if (it is OutCome.Failure) {
+                    messageBroker.sendMessage(
+                        Message(
+                            messageBody = MessageBody(throwable = it.throwable),
+                            action = { submitAction(HomeAction.GetForecast(cityName)) }
+                        )
+                    )
+                    setState {
+                        copy(
+                            todayState = todayState.copy(
+                                forecastResult = it,
+                                forecast = forecast
+                            )
+                        )
+                    }
+                }
             }
         }
     }

@@ -5,7 +5,8 @@ import com.sy.home_data.data_source.remote.HomeRemoteDataSourceImpl
 import com.sy.home_data.repository.HomeRepositoryImpl
 import com.sy.home_domain.repository.HomeRepository
 import com.sy.home_domain.usecase.GetCurrentDateUseCase
-import com.sy.home_domain.usecase.GetCurrentWeatherDataUseCase
+import com.sy.home_domain.usecase.GetForeCastUseCase
+import com.sy.home_domain.usecase.GetWeatherInfoUseCase
 import com.sy.home_domain.usecase.ObserveCityUseCase
 import com.sy.home_domain.usecase.SaveCityUseCase
 import com.sy.home_domain.usecase.SearchCityUseCase
@@ -23,6 +24,7 @@ val homeModule = module {
     factoryOf(::ObserveCityUseCase)
     factoryOf(::SaveCityUseCase)
     factoryOf(::GetCurrentDateUseCase)
-    factoryOf(::GetCurrentWeatherDataUseCase)
+    factoryOf(::GetWeatherInfoUseCase)
+    factoryOf(::GetForeCastUseCase)
     viewModelOf(::HomeViewModel)
 }

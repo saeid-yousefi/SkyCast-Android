@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GeoNameResponse(
+data class GeoNameDto(
     @SerialName("lng") var lng: String? = null,
     @SerialName("lat") var lat: String? = null,
     @SerialName("geonameId") var geoNameId: Int? = null,
