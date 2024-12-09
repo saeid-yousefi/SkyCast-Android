@@ -166,14 +166,14 @@ class HomeViewModel(
                             action = { submitAction(HomeAction.GetForecast(cityName)) }
                         )
                     )
-                    setState {
-                        copy(
-                            todayState = todayState.copy(
-                                forecastResult = it,
-                                forecast = forecast
-                            )
+                }
+                setState {
+                    copy(
+                        todayState = todayState.copy(
+                            forecastResult = it,
+                            forecast = forecast
                         )
-                    }
+                    )
                 }
             }
         }

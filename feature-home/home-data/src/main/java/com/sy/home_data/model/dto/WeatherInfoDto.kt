@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WeatherInfoDto(
-    @SerialName("dt_text") val dtText: String? = null,
+    @SerialName("dt_txt") val dtText: String? = null,
     val dt: Long? = null,
     val weather: List<WeatherDto>,
     val main: MainDto,

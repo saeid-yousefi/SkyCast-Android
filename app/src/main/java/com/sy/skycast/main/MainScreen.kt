@@ -50,7 +50,6 @@ fun MainScreen() {
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = innerPadding.calculateBottomPadding())
         ) {
             AppNavHost(navController)
         }

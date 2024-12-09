@@ -49,9 +49,9 @@ import com.sy.common_ui.composables.MultiStyleText
 import com.sy.common_ui.ext.fullTimeToHourMinute
 import com.sy.common_ui.ext.toCentigrade
 import com.sy.common_ui.ext.toDrawableId
+import com.sy.common_ui.theme.AppYellow
 import com.sy.common_ui.theme.BlueGray
 import com.sy.common_ui.theme.BlueGrayDark
-import com.sy.common_ui.theme.CharcoalBlue
 import com.sy.common_ui.theme.CharcoalBlueDark
 import com.sy.common_ui.theme.LocalDimens
 import com.sy.home_ui.R
@@ -68,7 +68,7 @@ fun TodayScreen(
 
     PullToRefreshBox(
         state = refreshState,
-        isRefreshing = viewState.weatherInfoResult is OutCome.Loading,
+        isRefreshing = viewState.weatherInfoResult is OutCome.Loading || viewState.forecastResult is OutCome.Loading,
         onRefresh = onRefresh,
     ) {
         LazyColumn(
@@ -216,7 +216,7 @@ fun TodayScreen(
             }
             println(viewState.forecast)
             viewState.forecast?.let { forecast ->
-                items(forecast) {
+                items(forecast.take(9)) {
                     TodayForecast(weatherInfo = it)
                 }
             }
@@ -276,6 +276,7 @@ fun DescribedClickableRow(title: String, desc: String, onClick: () -> Unit) {
 
 @Composable
 fun TodayForecast(weatherInfo: WeatherInfo) {
+    val context = LocalContext.current
     with(weatherInfo) {
         Row(
             modifier = Modifier
@@ -284,17 +285,12 @@ fun TodayForecast(weatherInfo: WeatherInfo) {
                 .clickable { }
                 .background(
                     brush = Brush.horizontalGradient(
-                        colors = listOf(CharcoalBlue, CharcoalBlueDark)
+                        colors = listOf(CharcoalBlueDark, CharcoalBlueDark.copy(alpha = 0.7f))
                     )
                 )
-                .padding(
-                    top = LocalDimens.current.paddingSmall,
-                    bottom = LocalDimens.current.paddingSmall,
-                    start = LocalDimens.current.paddingLarge,
-                    end = LocalDimens.current.paddingSmall
-                ),
+                .padding(LocalDimens.current.paddingMedium),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.spacedBy(LocalDimens.current.paddingSmall)
         ) {
             Text(
                 text = timeText?.fullTimeToHourMinute() ?: "",
@@ -306,13 +302,41 @@ fun TodayForecast(weatherInfo: WeatherInfo) {
                 painter = painterResource(id = weather.first().weatherType.toDrawableId()),
                 contentDescription = "",
             )
-            Spacer(modifier = Modifier.weight(6f))
+            Column(
+                modifier = Modifier.weight(4f),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = main.temp.toCentigrade(context, false),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Text(
+                    text = weather.first().description,
+                    color = AppYellow,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ) {
+                IconItem(
+                    iconId = R.drawable.img_humidity,
+                    textValue = main.humidity.toString() + "%"
+                )
+                IconItem(
+                    iconId = R.drawable.img_wind,
+                    textValue = wind.speed.toString()
+                )
+            }
         }
     }
 }
 
 @Composable
-fun IconItem(iconId: Int, textId: Int, textValue: String, modifier: Modifier = Modifier) {
+fun IconItem(modifier: Modifier = Modifier, iconId: Int, textId: Int? = null, textValue: String) {
     Row(
         modifier = Modifier.then(modifier),
         horizontalArrangement = Arrangement.Center,
@@ -324,15 +348,17 @@ fun IconItem(iconId: Int, textId: Int, textValue: String, modifier: Modifier = M
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = stringResource(id = textId),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Spacer(modifier = Modifier.width(2.dp))
+        textId?.let {
+            Text(
+                text = stringResource(id = textId),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(modifier = Modifier.width(2.dp))
+        }
         Text(
             text = textValue,
-            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+            style = if (textId != null) MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold) else MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onBackground
         )
     }
