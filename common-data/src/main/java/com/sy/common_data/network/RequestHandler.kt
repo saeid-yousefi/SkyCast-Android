@@ -1,7 +1,9 @@
 package com.sy.common_data.network
 
+import com.sy.common_domain.exception.RequestTimeOutException
 import com.sy.common_domain.exception.ServerException
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.statement.HttpResponse
 
 suspend inline fun <reified T> bodyOrThrow(apiCall: () -> HttpResponse): T {
@@ -13,6 +15,10 @@ suspend inline fun <reified T> bodyOrThrow(apiCall: () -> HttpResponse): T {
             throw ServerException(response.status.description, response.status.value)
         }
     } catch (e: Exception) {
-        throw e
+        val exception = when (e) {
+            is HttpRequestTimeoutException -> RequestTimeOutException()
+            else -> e
+        }
+        throw exception
     }
 }

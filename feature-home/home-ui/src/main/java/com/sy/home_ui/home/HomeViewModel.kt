@@ -44,7 +44,7 @@ class HomeViewModel(
 
     private var searchJob: Job? = null
     private var getCurrentWeatherJob: Job? = null
-    private var getForecast: Job? = null
+    private var getForecastJob: Job? = null
     val homeTextFields = HomeTextFields()
 
     init {
@@ -61,7 +61,7 @@ class HomeViewModel(
             is HomeAction.GetInitialData -> {
                 getCurrentDate()
                 getCurrentWeatherData(action.cityName)
-                getForecast(action.cityName)
+//                getForecast(action.cityName)
             }
 
             is SaveCity -> saveCity(action.geoName)
@@ -129,7 +129,7 @@ class HomeViewModel(
 
     private fun getCurrentWeatherData(cityName: String) {
         getCurrentWeatherJob?.cancel()
-        getCurrentWeatherJob = viewModelScope.launch {
+        getCurrentWeatherJob = viewModelScope.launch(Dispatchers.IO) {
             getWeatherInfoUseCase(cityName).collect {
                 var weatherInfo: WeatherInfo? = currentState.todayState.weatherInfo
                 if (it is OutCome.Success) {
@@ -142,18 +142,20 @@ class HomeViewModel(
                             action = { submitAction(HomeAction.GetCurrentWeather(cityName)) })
                     )
                 }
-                val todayState = currentState.todayState.copy(
-                    weatherInfoResult = it,
-                    weatherInfo = weatherInfo
-                )
-                setState { copy(todayState = todayState) }
+                setState {
+                    copy(
+                        todayState = todayState.copy(
+                            weatherInfo = weatherInfo
+                        )
+                    )
+                }
             }
         }
     }
 
     private fun getForecast(cityName: String) {
-        getForecast?.cancel()
-        getForecast = viewModelScope.launch(Dispatchers.IO) {
+        getForecastJob?.cancel()
+        getForecastJob = viewModelScope.launch(Dispatchers.IO) {
             getForeCastUseCase(cityName).collect {
                 var forecast = currentState.todayState.forecast
                 if (it is OutCome.Success) {
@@ -167,14 +169,14 @@ class HomeViewModel(
                         )
                     )
                 }
-                setState {
-                    copy(
-                        todayState = todayState.copy(
-                            forecastResult = it,
-                            forecast = forecast
-                        )
-                    )
-                }
+//                setState {
+//                    copy(
+//                        todayState = todayState.copy(
+//                            forecastResult = it,
+//                            forecast = forecast
+//                        )
+//                    )
+//                }
             }
         }
     }

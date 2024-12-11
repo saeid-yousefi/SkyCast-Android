@@ -74,16 +74,18 @@ fun TodayScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(LocalDimens.current.paddingMedium),
+                .padding(horizontal = LocalDimens.current.paddingMedium),
             verticalArrangement = Arrangement.spacedBy(LocalDimens.current.paddingMedium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 Box(
-                    modifier = Modifier.background(
-                        shape = MaterialTheme.shapes.large,
-                        color = MaterialTheme.colorScheme.secondary,
-                    ),
+                    modifier = Modifier
+                        .padding(top = LocalDimens.current.paddingSmall)
+                        .background(
+                            shape = MaterialTheme.shapes.large,
+                            color = MaterialTheme.colorScheme.secondary,
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(

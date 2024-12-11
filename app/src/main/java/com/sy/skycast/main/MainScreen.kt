@@ -34,7 +34,7 @@ fun MainScreen() {
                             message = it.message.messageBody.getCorrectMessage(context),
                             actionLabel = it.message.actionButton,
                             withDismissAction = true,
-                            duration = SnackbarDuration.Long
+                            duration = SnackbarDuration.Short
                         )
                     )
                 }

@@ -1,6 +1,7 @@
 package com.sy.common_ui.message_manager
 
 import android.content.Context
+import com.sy.common_domain.exception.RequestTimeOutException
 import com.sy.common_domain.exception.ServerException
 import com.sy.common_ui.R
 import java.net.ConnectException
@@ -20,9 +21,10 @@ data class MessageBody(val text: String? = null, val throwable: Throwable? = nul
             return text
         }
         return when (throwable) {
-            is ServerException -> return throwable.errorMessage
+            is RequestTimeOutException -> context?.getString(R.string.socket_timeout_error)!!
             is SocketTimeoutException -> context?.getString(R.string.socket_timeout_error)!!
             is ConnectException -> context?.getString(R.string.connection_failed_error)!!
+            is ServerException -> throwable.errorMessage
             else -> context?.getString(R.string.connection_failed_error)!!
         }
     }
