@@ -33,6 +33,7 @@ class ComposeLibraryPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx.material3").get())
                 add("implementation", libs.findLibrary("coil").get())
                 add("implementation", libs.findLibrary("coil-network").get())
+                add("implementation", libs.findLibrary("kotlinx-dataTime").get())
                 add("debugImplementation", libs.findLibrary("androidx-ui-tooling").get())
                 add("debugImplementation", libs.findLibrary("androidx-ui-test-manifest").get())
             }

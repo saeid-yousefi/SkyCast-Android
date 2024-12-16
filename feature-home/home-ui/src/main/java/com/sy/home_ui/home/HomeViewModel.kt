@@ -35,8 +35,7 @@ class HomeViewModel(
     private val getForeCastUseCase: GetForeCastUseCase,
     private val getCurrentDateUseCase: GetCurrentDateUseCase,
     private val getWeatherInfoUseCase: GetWeatherInfoUseCase,
-) :
-    BaseViewModel<HomeState, HomeEffect, HomeAction>() {
+) : BaseViewModel<HomeState, HomeEffect, HomeAction>() {
 
     companion object {
         private const val DEBOUNCE_INTERVAL = 300L
