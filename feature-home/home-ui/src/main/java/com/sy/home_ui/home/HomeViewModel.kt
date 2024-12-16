@@ -61,7 +61,7 @@ class HomeViewModel(
             is HomeAction.GetInitialData -> {
                 getCurrentDate()
                 getCurrentWeatherData(action.cityName)
-//                getForecast(action.cityName)
+                getForecast(action.cityName)
             }
 
             is SaveCity -> saveCity(action.geoName)
@@ -169,14 +169,14 @@ class HomeViewModel(
                         )
                     )
                 }
-//                setState {
-//                    copy(
-//                        todayState = todayState.copy(
-//                            forecastResult = it,
-//                            forecast = forecast
-//                        )
-//                    )
-//                }
+                setState {
+                    copy(
+                        todayState = todayState.copy(
+                            forecastResult = it,
+                            forecast = forecast
+                        )
+                    )
+                }
             }
         }
     }

@@ -300,12 +300,12 @@ fun TodayForecast(weatherInfo: WeatherInfo) {
                 style = MaterialTheme.typography.bodySmall
             )
             Image(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.size(36.dp),
                 painter = painterResource(id = weather.first().weatherType.toDrawableId()),
                 contentDescription = "",
             )
             Column(
-                modifier = Modifier.weight(4f),
+                modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
